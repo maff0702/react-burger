@@ -1,0 +1,36 @@
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: normal;
+  src: url("../../fonts/JetBrainsMono-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Iceland';
+  font-style: normal;
+  font-weight: normal;
+  src: url("../../fonts/Iceland.ttf") format("truetype");
+} 
+
+.burger__content{
+  width: 600px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid red;
+}
+
+.burger__ingredient{
+  display: flex;
+  justify-content: start;
+  flex-wrap: wrap;
+}
+.cart__ingredient{
+  width: 272px;
+  text-align: center;
+}
+.cart__ingredient:nth-child(2n) {
+  margin-left: 24px;
+ }
+ .cart__ingredient:nth-child(1n+3) {
+  margin-top: 32px;
+ }

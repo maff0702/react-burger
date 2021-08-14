@@ -1,0 +1,58 @@
+@font-face {
+  font-family: 'JetBrains Mono';
+  font-style: normal;
+  font-weight: normal;
+  src: url("../../fonts/JetBrainsMono-Regular.ttf") format("truetype");
+}
+
+@font-face {
+  font-family: 'Iceland';
+  font-style: normal;
+  font-weight: normal;
+  src: url("../../fonts/Iceland.ttf") format("truetype");
+} 
+
+.container {
+  composes: container from "../../style.module.css" ;
+}
+
+.header{
+  background: #1C1C21;
+  width: 100%;
+}
+
+.header__content{
+  display: flex;
+  font-family: 'JetBrains Mono', Arial, sans-serif;
+  font-size: 16px;
+  color: #8585AD;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.header__list{
+  display: flex;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.header__link{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header__logo{
+  height: 50px;
+}
+
+.header__profile{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.header__link_active{
+  color: #ffffff;
+}
