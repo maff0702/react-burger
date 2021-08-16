@@ -22,37 +22,16 @@ body::-webkit-scrollbar {
 }
 
 body::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 20px rgba(0,0,0,0.3); 
   -webkit-box-shadow: inset 0 0 20px rgba(0,0,0,0.3); 
 }
 
 body::-webkit-scrollbar-thumb {
+  box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5); 
   -webkit-box-shadow: inset 0 0 100px rgba(0, 0, 0, 0.5); 
-}
-
-.wrapper {
-  font-family: 'Iceland', Arial, sans-serif;
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  background: #131316;
 }
 
 .container {
   width: 1240px;
   margin: 0 auto;
-}
-
-.content__body{
-  display: flex;
-  justify-content: space-between;
-}
-
-@media screen and (max-width: 1200px) {
-  .container {
-    width: 768px;
-  }
-  .content__body{
-    flex-direction: column;
-    align-items: center;
-  }
 }

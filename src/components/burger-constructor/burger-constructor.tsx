@@ -1,81 +1,66 @@
-import React from 'react';
+import PropTypes from 'prop-types';
 import styles from './style.module.css';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
+const ingredientsPropTypes = PropTypes.shape({
+  _id: PropTypes.string.isRequired,
+  name: PropTypes.string.isRequired,
+  type: PropTypes.string.isRequired,
+  proteins: PropTypes.number.isRequired,
+  fat: PropTypes.number.isRequired,
+  carbohydrates: PropTypes.number.isRequired,
+  calories: PropTypes.number.isRequired,
+  price: PropTypes.number.isRequired,
+  image: PropTypes.string.isRequired,
+  image_mobile: PropTypes.string.isRequired,
+  image_large: PropTypes.string.isRequired,
+  __v: PropTypes.number.isRequired,
+});
+
+const idIngredients = [6,4,7,8,8,12,6];
+
+const IngedientElement = ({data}) => (
+  <span>
+    <DragIcon type="primary" />
+    <ConstructorElement
+      text={data.name}
+      price={data.price}
+      thumbnail={data.image}
+    />
+  </span>
+)
+
+IngedientElement.propTypes = {
+  data: ingredientsPropTypes.isRequired,
+};
+
+const Ingredients = ({data}) => (
+  <div className={styles.wrapper__ingrediends}>
+    {idIngredients.map((item, index) => {
+        return <IngedientElement key={index} data={data[item]}/>
+      })}
+  </div>
+);
+
+Ingredients.propTypes = {
+  data: PropTypes.arrayOf(ingredientsPropTypes.isRequired),
+};
 
 export default function BurgerConstructor({data}) {
-  
   return (
-    <div className={styles.constructor__content +' pt-25 pb-10'}>
+    <div className={styles.constructor__content}>
       <section className={styles.constructor__ingredients} >
-      <span className="ml-8"> 
+        <span className="pl-10 " style={{width:'552px'}}> 
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={data[0].name + " (верх)"}
+            text={data[3].name + " (верх)"}
             price={data[0].price}
             thumbnail={data[0].image}
           />
         </span>
-        <div className={styles.wrapper__ingrediends}>
-          <span>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={data[6].name}
-              price={data[6].price}
-              thumbnail={data[6].image}
-            />
-          </span>
-          <span>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={data[4].name}
-              price={data[4].price}
-              thumbnail={data[4].image}
-            />
-          </span>
-          <span>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={data[7].name}
-              price={data[7].price}
-              thumbnail={data[7].image}
-            />
-          </span>
-          <span>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={data[8].name}
-              price={data[8].price}
-              thumbnail={data[8].image}
-            />
-          </span>
-          <span>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={data[8].name}
-              price={data[8].price}
-              thumbnail={data[8].image}
-            />
-          </span>
-          <span>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={data[12].name}
-              price={data[12].price}
-              thumbnail={data[12].image}
-            />
-          </span>
-          <span>
-            <DragIcon type="primary" />
-            <ConstructorElement
-              text={data[6].name}
-              price={data[6].price}
-              thumbnail={data[6].image}
-            />
-          </span>
-        </div>
-        <span className="pl-8">
+        <Ingredients data={data} />
+        <span className="pl-10" style={{width:'552px'}}>
           <ConstructorElement
             type="bottom"
             isLocked={true}
@@ -94,3 +79,9 @@ export default function BurgerConstructor({data}) {
     </div>
   );
 };
+
+BurgerConstructor.propTypes = {
+  data: PropTypes.arrayOf(
+    ingredientsPropTypes.isRequired
+  )
+} 

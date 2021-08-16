@@ -1,9 +1,9 @@
 import styles from './style.module.css';
-import Header from './components/app-header/app-header';
-import BurgerIngredients from './components/burger-ingredients/burger-ingredients';
-import BurgerConstructor from './components/burger-constructor/burger-constructor';
+import Header from '../app-header/app-header';
+import BurgerIngredients from '../burger-ingredients/burger-ingredients';
+import BurgerConstructor from '../burger-constructor/burger-constructor';
 
-import data from './utils/data.js';
+import data from '../../utils/data.js';
 
 function App() {
   return (
