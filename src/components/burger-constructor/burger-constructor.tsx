@@ -1,21 +1,7 @@
 import PropTypes from 'prop-types';
+import ingredientsPropTypes from '../../utils/types.js'
 import styles from './style.module.css';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-
-const ingredientsPropTypes = PropTypes.shape({
-  _id: PropTypes.string.isRequired,
-  name: PropTypes.string.isRequired,
-  type: PropTypes.string.isRequired,
-  proteins: PropTypes.number.isRequired,
-  fat: PropTypes.number.isRequired,
-  carbohydrates: PropTypes.number.isRequired,
-  calories: PropTypes.number.isRequired,
-  price: PropTypes.number.isRequired,
-  image: PropTypes.string.isRequired,
-  image_mobile: PropTypes.string.isRequired,
-  image_large: PropTypes.string.isRequired,
-  __v: PropTypes.number.isRequired,
-});
 
 const idIngredients = [6,4,7,8,8,12,6];
 
@@ -54,7 +40,7 @@ export default function BurgerConstructor({data}) {
           <ConstructorElement
             type="top"
             isLocked={true}
-            text={data[3].name + " (верх)"}
+            text={data[0].name + " (верх)"}
             price={data[0].price}
             thumbnail={data[0].image}
           />

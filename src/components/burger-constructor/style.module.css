@@ -43,14 +43,12 @@
 
 .wrapper__ingrediends{
   height: 440px;
-  margin-right: -16px;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 10px;
   overflow-y: scroll;
   overflow-x: hidden;
-  margin-right: 0px;
   margin-left: 16px;
   
 }
