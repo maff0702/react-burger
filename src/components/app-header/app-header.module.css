@@ -13,7 +13,7 @@
 } 
 
 .container {
-  composes: container from "../../style.module.css" ;
+  composes: container from "../../index.module.css" ;
 }
 
 .header{

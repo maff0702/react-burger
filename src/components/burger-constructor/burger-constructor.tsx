@@ -1,7 +1,13 @@
 import PropTypes from 'prop-types';
-import ingredientsPropTypes from '../../utils/types.js'
-import styles from './style.module.css';
+import {useState} from 'react';
+import ingredientsPropTypes from '../../types/types.js'
+import styles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+import ModalOverlay from '../modal/modal-overlay';
+import Modal from '../modal/modal';
+import OrderDetails from '../modal/order-details';
+
+const ModalComponent = ModalOverlay(Modal(OrderDetails));
 
 const idIngredients = [6,4,7,8,8,12,6];
 
@@ -26,13 +32,14 @@ const Ingredients = ({data}) => (
         return <IngedientElement key={index} data={data[item]}/>
       })}
   </div>
-);
+)
 
 Ingredients.propTypes = {
   data: PropTypes.arrayOf(ingredientsPropTypes.isRequired),
 };
 
 export default function BurgerConstructor({data}) {
+  const [modalActive, setModalActive] = useState(false);
   return (
     <div className={styles.constructor__content}>
       <section className={styles.constructor__ingredients} >
@@ -58,13 +65,19 @@ export default function BurgerConstructor({data}) {
       </section>  
       <div className={"mt-10 " + styles.constructor__info}>
         <span className="text text_type_digits-medium mr-10"><span>1000</span><CurrencyIcon type="primary" /></span>
-        <Button type="primary" size="medium">
+        <Button type="primary" size="medium" onClick={() => setModalActive(true)}>
           Оформить заказ
         </Button>
       </div>
+      <ModalComponent
+        active={modalActive}
+        setActive={setModalActive}
+        info={undefined}
+        title=""
+      />
     </div>
   );
-};
+}
 
 BurgerConstructor.propTypes = {
   data: PropTypes.arrayOf(

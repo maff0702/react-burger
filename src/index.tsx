@@ -4,11 +4,10 @@ import App from './components/app/app';
 import reportWebVitals from './reportWebVitals';
 
 
-ReactDOM.render(
+ReactDOM.render((
   <React.StrictMode>
     <App />
-  </React.StrictMode>,
-  document.getElementById('root')
-);
+  </React.StrictMode>
+  ),document.getElementById('root'));
 
 reportWebVitals();
