@@ -3,11 +3,8 @@ import PropTypes from 'prop-types';
 import styles from './burger-ingredient.module.css';
 import ingredientsPropTypes from '../../types/types.js'
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from '../modal/modal-overlay';
 import Modal from '../modal/modal';
 import IngredientDeatails from '../modal/ingredient-details';
-
-const ModalComponent = ModalOverlay(Modal(IngredientDeatails));
 
 const IngredientCard = ({ingredients,setActive,setIngredient}) => (
   <div className={styles.cart__ingredient}
@@ -116,12 +113,14 @@ export default function BurgerIngredients({data}) {
           setActive={setModalActive}
           setIngredient={setIngredient}
         />
-        <ModalComponent
+        
+        <Modal
           active={modalActive}
           setActive={setModalActive}
-          info={ingredient}
           title="Детали ингредиента"
-        />
+        >
+          {typeof(ingredient)=='object' ? <IngredientDeatails info={ingredient}/> : <div>Ошибка!</div>}
+        </Modal>
       </section>}
     </section>
   );

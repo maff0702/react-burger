@@ -3,11 +3,8 @@ import {useState} from 'react';
 import ingredientsPropTypes from '../../types/types.js'
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import ModalOverlay from '../modal/modal-overlay';
 import Modal from '../modal/modal';
 import OrderDetails from '../modal/order-details';
-
-const ModalComponent = ModalOverlay(Modal(OrderDetails));
 
 const idIngredients = [6,4,7,8,8,12,6];
 
@@ -69,12 +66,13 @@ export default function BurgerConstructor({data}) {
           Оформить заказ
         </Button>
       </div>
-      <ModalComponent
+      <Modal
         active={modalActive}
         setActive={setModalActive}
-        info={undefined}
-        title=""
-      />
+        title="Детали ингредиента"
+      >
+        <OrderDetails info={123456}/>
+      </Modal>
     </div>
   );
 }
