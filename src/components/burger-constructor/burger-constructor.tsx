@@ -69,7 +69,7 @@ export default function BurgerConstructor({data}) {
       <Modal
         active={modalActive}
         setActive={setModalActive}
-        title="Детали ингредиента"
+        title=""
       >
         <OrderDetails info={123456}/>
       </Modal>
