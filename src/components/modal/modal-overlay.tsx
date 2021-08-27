@@ -9,7 +9,6 @@ const ModalOverlay = (props) => {
   const closeModal = ({key}: KeyboardEvent) => {
     if (key === "Escape" ) props.setActive(false);
   }
-  document.addEventListener('keydown', closeModal);
   useEffect(() => {
     document.addEventListener('keydown', closeModal);
     return () => document.removeEventListener('keydown', closeModal);
