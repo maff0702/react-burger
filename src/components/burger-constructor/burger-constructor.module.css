@@ -28,9 +28,10 @@
 }
 
 .wrapper__ingrediends{
-  height: 440px;
+  max-height: 440px;
   display: flex;
   flex-direction: column;
+  justify-content: start;
   align-items: center;
   gap: 10px;
   overflow-y: scroll;

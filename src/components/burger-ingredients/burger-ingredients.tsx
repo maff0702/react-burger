@@ -1,35 +1,67 @@
-import {useState} from 'react';
+import { useState, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-ingredient.module.css';
 import ingredientsPropTypes from '../../types/types.js'
 import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngredientDeatails from '../modal/ingredient-details';
+import { СonstructorContext, SetСonstructorContext } from '../../services/constructorContext';
 
-const IngredientCard = ({ingredients,setActive,setIngredient}) => (
+const IngredientCard = ({ingredients,setActive,setIngredient,stateConstructor,setStateConstructor}) => {
+  const clickIngredient = () =>{
+    setActive(true);
+    setIngredient(ingredients);
+    if(ingredients.type === 'bun'){
+      setStateConstructor({
+        ...stateConstructor,
+        bun: ingredients
+      })
+    }else{
+      setStateConstructor({
+        ...stateConstructor,
+        ingredients: [
+          ...stateConstructor.ingredients,
+          ingredients
+        ]
+      })
+    }
+  }
+  return(
   <div className={styles.cart__ingredient}
-    onClick={() => {setActive(true);setIngredient(ingredients)}}
+    onClick={clickIngredient}
   >
     <span className={styles.icon__counter}><Counter count={1} size="small" /></span>
     <img className="mr-4 ml-4" src={ingredients.image} alt={ingredients.name} />
     <p className="mt-1 text text_type_digits-default">{ingredients.price} <CurrencyIcon type="primary" /></p>
     <p className="text text_type_main-default">{ingredients.name}</p>
   </div>
-)
+)}
 
 IngredientCard.propTypes = {
   ingredients: ingredientsPropTypes.isRequired,
   setActive: PropTypes.func.isRequired,
-  setIngredient: PropTypes.func.isRequired
+  setIngredient: PropTypes.func.isRequired,
+  stateConstructor: PropTypes.shape({
+    ingredients: PropTypes.arrayOf(ingredientsPropTypes.isRequired),
+    bun: ingredientsPropTypes.isRequired
+  }).isRequired,
+  setStateConstructor: PropTypes.func.isRequired
 };
 
-const Ingredients = ({data,type,id,title,setActive,setIngredient}) => (
+const Ingredients = ({data,type,id,title,setActive,setIngredient,stateConstructor,setStateConstructor}) => (
   <section>
     <h3 className='text text_type_main-medium three' id={id}>{title}</h3>
     <div className={styles.burger__ingredient + " mt-6 mr-2 ml-4"}>
       { data.map((item, index) => {
         if(item.type === type) {
-          return <IngredientCard key={index} ingredients={item} setActive={setActive} setIngredient={setIngredient}/>
+          return <IngredientCard 
+                    key={index}
+                    ingredients={item}
+                    setActive={setActive}
+                    setIngredient={setIngredient}
+                    stateConstructor={stateConstructor}
+                    setStateConstructor={setStateConstructor}
+                  />
         }else{
           return null;
         }
@@ -44,7 +76,9 @@ Ingredients.propTypes = {
   id: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   setActive: PropTypes.func.isRequired,
-  setIngredient: PropTypes.func.isRequired
+  setIngredient: PropTypes.func.isRequired,
+  stateConstructor: PropTypes.shape({}).isRequired,
+  setStateConstructor: PropTypes.func.isRequired
 };
 
 export default function BurgerIngredients({data}) {
@@ -60,8 +94,10 @@ export default function BurgerIngredients({data}) {
       top: ingredientItem.offsetTop-287,
       behavior: "smooth"
     });   
-    
   }
+  
+  const stateConstructor = useContext(СonstructorContext);
+  const setStateConstructor = useContext(SetСonstructorContext);
 
   return (
     <section className={styles.burger__content +' pt-10 pb-10'}>
@@ -96,6 +132,8 @@ export default function BurgerIngredients({data}) {
           title="Булки"
           setActive={setModalActive}
           setIngredient={setIngredient}
+          stateConstructor={stateConstructor}
+          setStateConstructor={setStateConstructor}
         />
         <Ingredients
           data={data.dataIngredients}
@@ -104,6 +142,8 @@ export default function BurgerIngredients({data}) {
           title="Соусы"
           setActive={setModalActive}
           setIngredient={setIngredient}
+          stateConstructor={stateConstructor}
+          setStateConstructor={setStateConstructor}
         />
         <Ingredients
           data={data.dataIngredients}
@@ -112,6 +152,8 @@ export default function BurgerIngredients({data}) {
           title="Начинки"
           setActive={setModalActive}
           setIngredient={setIngredient}
+          stateConstructor={stateConstructor}
+          setStateConstructor={setStateConstructor}
         />
         
         <Modal
