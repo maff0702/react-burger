@@ -2,9 +2,12 @@ import styles from './modal.module.css';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import PropTypes from 'prop-types';
 import ModalOverlay from './modal-overlay';
+import ReactDOM from 'react-dom';
+const modalRoot = document.getElementById("modals");
 
-const Modal = (props) => {  
-  return (
+const Modal = (props) => {
+  return (props.active && modalRoot ? ReactDOM.createPortal(
+    (
     <ModalOverlay
       active={props.active}
       setActive={props.setActive}
@@ -17,7 +20,8 @@ const Modal = (props) => {
         {props.children}
       </div>
     </ModalOverlay>
-  )
+    ),
+  modalRoot) : null);
 }
 
 export default Modal;

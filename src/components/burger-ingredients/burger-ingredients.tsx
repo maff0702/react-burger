@@ -1,130 +1,60 @@
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styles from './burger-ingredient.module.css';
-import ingredientsPropTypes from '../../types/types.js'
-import { Tab, CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
+import ingredientsPropType from '../../types/types.js'
+import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngredientDeatails from '../modal/ingredient-details';
-import { СonstructorContext, SetСonstructorContext } from '../../services/constructorContext';
-
-const IngredientCard = ({ingredients,setActive,setIngredient,stateConstructor,setStateConstructor}) => {
-  const clickIngredient = () =>{
-    setActive(true);
-    setIngredient(ingredients);
-    if(ingredients.type === 'bun'){
-      setStateConstructor({
-        ...stateConstructor,
-        bun: ingredients
-      })
-    }else{
-      setStateConstructor({
-        ...stateConstructor,
-        ingredients: [
-          ...stateConstructor.ingredients,
-          ingredients
-        ]
-      })
-    }
-  }
-  return(
-  <div className={styles.cart__ingredient}
-    onClick={clickIngredient}
-  >
-    <span className={styles.icon__counter}><Counter count={1} size="small" /></span>
-    <img className="mr-4 ml-4" src={ingredients.image} alt={ingredients.name} />
-    <p className="mt-1 text text_type_digits-default">{ingredients.price} <CurrencyIcon type="primary" /></p>
-    <p className="text text_type_main-default">{ingredients.name}</p>
-  </div>
-)}
-
-IngredientCard.propTypes = {
-  ingredients: ingredientsPropTypes.isRequired,
-  setActive: PropTypes.func.isRequired,
-  setIngredient: PropTypes.func.isRequired,
-  stateConstructor: PropTypes.shape({
-    ingredients: PropTypes.arrayOf(ingredientsPropTypes.isRequired),
-    bun: ingredientsPropTypes.isRequired
-  }).isRequired,
-  setStateConstructor: PropTypes.func.isRequired
-};
-
-const Ingredients = ({data,type,id,title,setActive,setIngredient,stateConstructor,setStateConstructor}) => (
-  <section>
-    <h3 className='text text_type_main-medium three' id={id}>{title}</h3>
-    <div className={styles.burger__ingredient + " mt-6 mr-2 ml-4"}>
-      { data.map((item, index) => {
-        if(item.type === type) {
-          return <IngredientCard 
-                    key={index}
-                    ingredients={item}
-                    setActive={setActive}
-                    setIngredient={setIngredient}
-                    stateConstructor={stateConstructor}
-                    setStateConstructor={setStateConstructor}
-                  />
-        }else{
-          return null;
-        }
-        })}
-    </div>
-  </section>
-)
-
-Ingredients.propTypes = {
-  data: PropTypes.arrayOf(ingredientsPropTypes.isRequired),
-  type: PropTypes.string.isRequired,
-  id: PropTypes.string.isRequired,
-  title: PropTypes.string.isRequired,
-  setActive: PropTypes.func.isRequired,
-  setIngredient: PropTypes.func.isRequired,
-  stateConstructor: PropTypes.shape({}).isRequired,
-  setStateConstructor: PropTypes.func.isRequired
-};
+import { BurgerIngredientsContext, SetBurgerIngredientsContext } from '../../services/BurgerIngredientsContext';
+import { marginTopScroll } from '../../utils/Constants';
+import Ingredients from './ingredients';
 
 export default function BurgerIngredients({data}) {
   const [current, setCurrent] = useState('one');
-  const [modalActive, setModalActive] = useState(false);
+  const [isModalActive, setModalActive] = useState(false);
   const [ingredient, setIngredient] = useState('');
+  
+  const ingredientsSection = useRef<null | HTMLElement>(null)
 
-  const clickSkroll = (e) => {
+  const onTabClick = (e) => {
     e.preventDefault();
-    const scrollSection = document.getElementById("ingredients-section");
+    const scrollSection = ingredientsSection.current;
     const ingredientItem = document.getElementById(`${e.currentTarget.id}-list`);    
     scrollSection && ingredientItem && scrollSection.scrollTo({
-      top: ingredientItem.offsetTop-287,
+      top: ingredientItem.offsetTop-marginTopScroll,
       behavior: "smooth"
     });   
-  }
+  }  
   
-  const stateConstructor = useContext(СonstructorContext);
-  const setStateConstructor = useContext(SetСonstructorContext);
+  const stateConstructor = useContext(BurgerIngredientsContext);
+  const setStateConstructor = useContext(SetBurgerIngredientsContext);
 
   return (
     <section className={styles.burger__content +' pt-10 pb-10'}>
       <h1 className='text text_type_main-large'>Соберите бургер</h1>
-      <div style={{ display: 'flex' }}  className='mt-5'>
-        <span onClick={clickSkroll} id="bun">
+      <div className={styles.dFlex + ' mt-5'}>
+        <span onClick={onTabClick} id="bun">
           <Tab value="one" active={current === 'one'} onClick={setCurrent}>
             Булки
           </Tab>
         </span>
-        <span onClick={clickSkroll} id="sauce">
+        <span onClick={onTabClick} id="sauce">
           <Tab value="two" active={current === 'two'} onClick={setCurrent}>
-            Сосусы
+            Соусы
           </Tab>
           </span>
-          <span onClick={clickSkroll} id="main">
+          <span onClick={onTabClick} id="main">
           <Tab value="three" active={current === 'three'} onClick={setCurrent}>
             Начинки
           </Tab>
         </span>
       </div>
-      <div style={{ textAlign: 'center' }} className="text text_type_main-default mt-3">
+      <div className={styles.tCenter +" text text_type_main-default mt-3"}>
         {data.isError && <span>Невозможно загрузить данные, попробуйте обновить страницу</span>}
         {data.isLoading && <span>Идет загрузка ...</span>}
       </div>
       {data.dataIngredients.length > 0 && 
-      <section className={styles.wrapper__ingrediends} id="ingredients-section">
+      <section className={styles.wrapper__ingrediends} ref={ingredientsSection}>
         <Ingredients
           data={data.dataIngredients}
           type="bun"
@@ -157,7 +87,7 @@ export default function BurgerIngredients({data}) {
         />
         
         <Modal
-          active={modalActive}
+          active={isModalActive}
           setActive={setModalActive}
           title="Детали ингредиента"
         >
@@ -170,7 +100,7 @@ export default function BurgerIngredients({data}) {
 
 BurgerIngredients.propTypes = {
   data: PropTypes.shape({
-    dataIngredients: PropTypes.arrayOf(ingredientsPropTypes.isRequired),
+    dataIngredients: PropTypes.arrayOf(ingredientsPropType.isRequired),
     isError: PropTypes.bool,
     isLoading: PropTypes.bool
   })

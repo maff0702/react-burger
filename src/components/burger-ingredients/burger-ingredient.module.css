@@ -55,3 +55,10 @@
   width: 272px;
   position: relative;
  }
+
+ .dFlex{
+   display: flex;
+ }
+ .tCenter{
+  text-align: center;
+ }

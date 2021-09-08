@@ -1,5 +1,5 @@
 import styles from './modal.module.css';
-import ingredientsPropTypes from '../../types/types.js'
+import ingredientsPropType from '../../types/types.js'
 
 export default function IngredientDetails({info}) {
   return(
@@ -28,5 +28,5 @@ export default function IngredientDetails({info}) {
   )
 }
 IngredientDetails.propTypes = {
-  info: ingredientsPropTypes.isRequired,
+  info: ingredientsPropType.isRequired,
 };
