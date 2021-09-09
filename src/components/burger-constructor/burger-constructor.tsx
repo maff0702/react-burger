@@ -1,54 +1,40 @@
-import { useState, useContext } from 'react';
+import { useState } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import OrderDetails from '../modal/order-details';
-import { BurgerIngredientsContext } from '../../services/BurgerIngredientsContext';
-import { sendOrder } from '../../utils/api';
 import Ingredients from './ingredients';
+import { useDrop } from "react-dnd";
+import { addElementConstructor, addBunConstructor, sendOrder } from '../../store/ingredientsSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 export default function BurgerConstructor() {
+  const dispatch = useDispatch();
   const [isModalActive, setModalActive] = useState(false);
-  const [order, setOrder] = useState({
-    order: null,
-    isError: false,
-    isLoading: true,
-  });
   const isObjectEmpty = object =>(JSON.stringify(object) !== '{}' ? true : false)
+  const ingredients = useSelector((state: any) => state.ingredients.constructors.ingredients);
+  const bun = useSelector((state: any) => state.ingredients.constructors.bun);
 
-  const stateConstructor = useContext(BurgerIngredientsContext);
-  let ingredients;
-  let bun;
-  let priceBun = 0;
-  let totalPrice = 0;
-  let price = 0;
-  let idBurgerIngredients = [] as any;
-  let idIngredients = [] as any;
+  const [, dropTarget] = useDrop({
+    accept: "ingredient",
+    drop(item: any) {
+      item.type === 'bun' ? dispatch(addBunConstructor({item})) : dispatch(addElementConstructor({item}))
+    }
+  });
 
-  if(isObjectEmpty(bun)) bun = stateConstructor.bun;
-
-  if(stateConstructor.ingredients.length > 0) {
-    ingredients = stateConstructor.ingredients;
-    price = ingredients.reduce((sum, current) => {
-      return sum + current.price;
-    }, 0);
-    ingredients.forEach((item) =>{
-      idIngredients.push(item._id)
-    })
-  }
-  if(isObjectEmpty(bun)) {
-    priceBun = bun.price + priceBun;
-    idBurgerIngredients = [bun._id,...idIngredients,bun._id]
-  }
-  totalPrice = priceBun*2 + price;
+  const totalPrice = ingredients.reduce((sum, current) => {
+    return sum + current.price;
+  }, 0) + (bun.price ? bun.price*2 : 0);
 
   const handleClick = () => {
     setModalActive(true);
-    sendOrder(order, setOrder, idBurgerIngredients);
+    const idIngredients = [] as any;
+    ingredients.forEach(element => idIngredients.push(element._id));
+    dispatch(sendOrder([bun._id, ...idIngredients, bun._id]))
   }
   
   return (
-    <div className={styles.constructor__content}>
+    <div className={styles.constructor__content}ref={dropTarget}>
       <section className={styles.constructor__ingredients} >
         <span className="pl-10 " style={{width:'552px'}}> 
           {isObjectEmpty(bun) ? <ConstructorElement
@@ -57,11 +43,11 @@ export default function BurgerConstructor() {
             text={`${bun.name} (верх)`}
             price={bun.price}
             thumbnail={bun.image}
-          /> : 'Выберите булку из списка'}
+          /> : 'Выберите булку из списка и перетащите его сюда :)'}
         </span>
-        {ingredients ? 
-          <Ingredients data={ingredients}/> : 
-          <span className="ml-10">Выберите ингредиенты из списка</span>
+        {ingredients.length > 0 ? 
+          <Ingredients /> : 
+          <span className="ml-10">Выберите ингредиенты из списка и перетащите его сюда :)</span>
         }
         <span className="pl-10" style={{width:'552px'}}>
           {isObjectEmpty(bun) && <ConstructorElement
@@ -88,7 +74,7 @@ export default function BurgerConstructor() {
         setActive={setModalActive}
         title=""
       >
-        <OrderDetails info={order}/>
+        <OrderDetails/>
       </Modal>
     </div>
   );

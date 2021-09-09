@@ -1,49 +1,50 @@
-import { useState, useContext, useRef } from 'react';
-import PropTypes from 'prop-types';
+import { useState, useRef, useEffect } from 'react';
 import styles from './burger-ingredient.module.css';
-import ingredientsPropType from '../../types/types.js'
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
 import IngredientDeatails from '../modal/ingredient-details';
-import { BurgerIngredientsContext, SetBurgerIngredientsContext } from '../../services/BurgerIngredientsContext';
-import { marginTopScroll } from '../../utils/Constants';
 import Ingredients from './ingredients';
+import { useSelector, useDispatch } from 'react-redux';
+import { requestIngredients } from '../../store/ingredientsSlice';
 
-export default function BurgerIngredients({data}) {
+export default function BurgerIngredients() {
+  const dispatch = useDispatch();
+  const data = useSelector((state: any) => state.ingredients);
   const [current, setCurrent] = useState('one');
   const [isModalActive, setModalActive] = useState(false);
-  const [ingredient, setIngredient] = useState('');
-  
-  const ingredientsSection = useRef<null | HTMLElement>(null)
+  const ingredientsSection = useRef(null) as any
+  const bunRef = useRef(null) as any
+  const sauceRef = useRef(null) as any
+  const mainRef = useRef(null) as any
 
-  const onTabClick = (e) => {
-    e.preventDefault();
-    const scrollSection = ingredientsSection.current;
-    const ingredientItem = document.getElementById(`${e.currentTarget.id}-list`);    
-    scrollSection && ingredientItem && scrollSection.scrollTo({
-      top: ingredientItem.offsetTop-marginTopScroll,
-      behavior: "smooth"
-    });   
-  }  
+  useEffect(() => {dispatch(requestIngredients())},[dispatch])
+
+  const onTabScroll = () => {
+    const scrollSection = ingredientsSection.current.getBoundingClientRect().top;
+    const bunList = bunRef.current.getBoundingClientRect().top;
+    const sauceList = sauceRef.current.getBoundingClientRect().top;
+    const mainList = mainRef.current.getBoundingClientRect().top;
+    if(bunList <= scrollSection) setCurrent('one');
+    if(sauceList <= scrollSection) setCurrent('two');
+    if(mainList <= scrollSection) setCurrent('three');
+  }
   
-  const stateConstructor = useContext(BurgerIngredientsContext);
-  const setStateConstructor = useContext(SetBurgerIngredientsContext);
 
   return (
     <section className={styles.burger__content +' pt-10 pb-10'}>
       <h1 className='text text_type_main-large'>Соберите бургер</h1>
       <div className={styles.dFlex + ' mt-5'}>
-        <span onClick={onTabClick} id="bun">
+        <span onClick={()=>{bunRef.current.scrollIntoView({behavior: "smooth"})}} id="bun">
           <Tab value="one" active={current === 'one'} onClick={setCurrent}>
             Булки
           </Tab>
         </span>
-        <span onClick={onTabClick} id="sauce">
+        <span onClick={()=>{sauceRef.current.scrollIntoView({behavior: "smooth"})}} id="sauce">
           <Tab value="two" active={current === 'two'} onClick={setCurrent}>
             Соусы
           </Tab>
           </span>
-          <span onClick={onTabClick} id="main">
+          <span onClick={()=>{mainRef.current.scrollIntoView({behavior: "smooth"})}} id="main">
           <Tab value="three" active={current === 'three'} onClick={setCurrent}>
             Начинки
           </Tab>
@@ -54,54 +55,43 @@ export default function BurgerIngredients({data}) {
         {data.isLoading && <span>Идет загрузка ...</span>}
       </div>
       {data.dataIngredients.length > 0 && 
-      <section className={styles.wrapper__ingrediends} ref={ingredientsSection}>
-        <Ingredients
-          data={data.dataIngredients}
-          type="bun"
-          id="bun-list"
-          title="Булки"
-          setActive={setModalActive}
-          setIngredient={setIngredient}
-          stateConstructor={stateConstructor}
-          setStateConstructor={setStateConstructor}
-        />
-        <Ingredients
-          data={data.dataIngredients}
-          type="sauce"
-          id="sauce-list"
-          title="Соусы"
-          setActive={setModalActive}
-          setIngredient={setIngredient}
-          stateConstructor={stateConstructor}
-          setStateConstructor={setStateConstructor}
-        />
-        <Ingredients
-          data={data.dataIngredients}
-          type="main"
-          id="main-list"
-          title="Начинки"
-          setActive={setModalActive}
-          setIngredient={setIngredient}
-          stateConstructor={stateConstructor}
-          setStateConstructor={setStateConstructor}
-        />
-        
+      <section 
+        className={styles.wrapper__ingrediends}
+        ref={ingredientsSection}
+        onScroll={onTabScroll}
+      >
+        <span ref={bunRef}>
+          <Ingredients
+            data={data.dataIngredients}
+            type="bun"
+            title="Булки"
+            setActive={setModalActive}
+          />
+        </span>
+        <span ref={sauceRef}>
+          <Ingredients
+            data={data.dataIngredients}
+            type="sauce"
+            title="Соусы"
+            setActive={setModalActive}
+          />
+        </span>
+        <span ref={mainRef}>
+          <Ingredients
+            data={data.dataIngredients}
+            type="main"
+            title="Начинки"
+            setActive={setModalActive}
+          />
+        </span>
         <Modal
           active={isModalActive}
           setActive={setModalActive}
           title="Детали ингредиента"
         >
-          {typeof(ingredient)=='object' ? <IngredientDeatails info={ingredient}/> : <div>Ошибка!</div>}
+          <IngredientDeatails/>
         </Modal>
       </section>}
     </section>
   );
 }
-
-BurgerIngredients.propTypes = {
-  data: PropTypes.shape({
-    dataIngredients: PropTypes.arrayOf(ingredientsPropType.isRequired),
-    isError: PropTypes.bool,
-    isLoading: PropTypes.bool
-  })
-} 

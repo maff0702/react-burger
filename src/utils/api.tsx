@@ -1,4 +1,4 @@
-import { API_URL } from "./Constants";
+import { API_URL } from "./constants";
 
 export const requestIngredients = async(state,setState) => {
   try {

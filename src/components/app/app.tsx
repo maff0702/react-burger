@@ -1,38 +1,27 @@
-import {useState, useEffect} from 'react';
 import styles from './app.module.css';
 import Header from '../app-header/app-header';
 import BurgerIngredients from '../burger-ingredients/burger-ingredients';
 import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { BurgerIngredientsContext, SetBurgerIngredientsContext } from '../../services/BurgerIngredientsContext'
-import { requestIngredients } from '../../utils/api';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
+import { Provider } from 'react-redux';
+import store from '../../store';
 
-function App() {
-  const [state, setState] = useState({
-    dataIngredients: [],
-    isError: false,
-    isLoading: true
-  });
-  const [stateConstructor, setStateConstructor] = useState({
-    ingredients: [],
-    bun: {}
-  });
-
-  useEffect(()=>{requestIngredients(state, setState);},[]);
-  
+function App() {   
   return (
-    <div className={styles.wrapper}>
-      <Header />
-      <div className={styles.container}>
-        <main className={styles.content__body}>
-          <BurgerIngredientsContext.Provider value={stateConstructor}>
-            <SetBurgerIngredientsContext.Provider  value={setStateConstructor}>
-              <BurgerIngredients data={state}/>
-              {!state.isError && !state.isError && <BurgerConstructor/>}
-            </SetBurgerIngredientsContext.Provider>
-          </BurgerIngredientsContext.Provider>
-        </main>
+    <Provider store={store}>
+      <div className={styles.wrapper}>
+        <Header />
+        <div className={styles.container}>
+          <main className={styles.content__body}>
+            <DndProvider backend={HTML5Backend}>
+              <BurgerIngredients />
+              <BurgerConstructor />
+            </DndProvider>
+          </main>
+        </div>
       </div>
-    </div>
+    </Provider>
   );
 }
 
