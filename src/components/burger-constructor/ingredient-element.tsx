@@ -1,7 +1,8 @@
 import ingredientsPropType from '../../types/types.js'
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
-import { deleteElementConstructor, moveIngredientConstructor } from '../../store/ingredientsSlice';
+import { ingredientCurrentDecrement } from '../../store/ingredientsSlice';
+import { deleteElementConstructor, moveIngredientConstructor } from '../../store/constructorSlice';
 import { useDrag, useDrop } from 'react-dnd';
 import { useRef} from 'react';
 
@@ -52,7 +53,10 @@ const IngedientElement = ({data, index}) => {
         text={data.name}
         price={data.price}
         thumbnail={data.image}
-        handleClose={()=>{dispatch(deleteElementConstructor({index, id}))}}
+        handleClose={()=>{
+          dispatch(deleteElementConstructor({index, id}));
+          dispatch(ingredientCurrentDecrement({id}));
+          }}
       />
     </span>
   )

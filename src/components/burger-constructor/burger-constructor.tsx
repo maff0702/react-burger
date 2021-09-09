@@ -2,23 +2,30 @@ import { useState } from 'react';
 import styles from './burger-constructor.module.css';
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import Modal from '../modal/modal';
-import OrderDetails from '../modal/order-details';
+import OrderDetails from '../order-details/order-details';
 import Ingredients from './ingredients';
 import { useDrop } from "react-dnd";
-import { addElementConstructor, addBunConstructor, sendOrder } from '../../store/ingredientsSlice';
+import { ingredientCurrentIncrement } from '../../store/ingredientsSlice';
 import { useDispatch, useSelector } from 'react-redux';
+import { sendOrder, addElementConstructor, addBunConstructor } from '../../store/constructorSlice'
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch();
   const [isModalActive, setModalActive] = useState(false);
   const isObjectEmpty = object =>(JSON.stringify(object) !== '{}' ? true : false)
-  const ingredients = useSelector((state: any) => state.ingredients.constructors.ingredients);
-  const bun = useSelector((state: any) => state.ingredients.constructors.bun);
+  const ingredients = useSelector((state: any) => state.constructors.ingredients);
+  const bun = useSelector((state: any) => state.constructors.bun);
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
     drop(item: any) {
-      item.type === 'bun' ? dispatch(addBunConstructor({item})) : dispatch(addElementConstructor({item}))
+      if(item.type === 'bun'){
+        dispatch(addBunConstructor({item}))
+        dispatch(ingredientCurrentIncrement({item}))
+      } else {
+        dispatch(addElementConstructor({item}))
+        dispatch(ingredientCurrentIncrement({item}))
+      }
     }
   });
 
@@ -43,11 +50,11 @@ export default function BurgerConstructor() {
             text={`${bun.name} (верх)`}
             price={bun.price}
             thumbnail={bun.image}
-          /> : 'Выберите булку из списка и перетащите его сюда :)'}
+          /> : 'Выберите булку из списка и перетащите её сюда :)'}
         </span>
         {ingredients.length > 0 ? 
           <Ingredients /> : 
-          <span className="ml-10">Выберите ингредиенты из списка и перетащите его сюда :)</span>
+          <span className="ml-10">Выберите ингредиенты из списка и перетащите сюда</span>
         }
         <span className="pl-10" style={{width:'552px'}}>
           {isObjectEmpty(bun) && <ConstructorElement

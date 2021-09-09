@@ -1,0 +1,15 @@
+.details__ingredient{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+}
+.details__ingredient_info{
+  display: flex;
+}
+.details__ingredient_span{
+  width: 120px;
+  text-align: center;
+  line-height: 28px;
+}

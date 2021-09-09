@@ -1,4 +1,4 @@
-import styles from './modal.module.css';
+import styles from './ingredient-details.module.css';
 import { useSelector } from 'react-redux';
 
 export default function IngredientDetails() {
