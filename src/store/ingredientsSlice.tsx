@@ -28,7 +28,7 @@ const ingredientsSlice = createSlice({
   },
   reducers: {
     ingredientCurrentIncrement: (state, action) => {
-      state.dataIngredients = state.dataIngredients.map((obj) => obj.type === 'bun' ? {...obj, __v: 0} : obj );
+      if(action.payload.item.type === 'bun') state.dataIngredients = state.dataIngredients.map((obj) => obj.type === 'bun' ? {...obj, __v: 0} : obj );
       state.dataIngredients = state.dataIngredients.map((obj) => obj._id === action.payload.item._id ? {...obj, __v: obj.__v + 1} : obj );
       state.dataIngredients = state.dataIngredients.map((obj) => (obj.type === 'bun' && obj._id === action.payload.item._id) ? {...obj, __v: 2} : obj);
     },
