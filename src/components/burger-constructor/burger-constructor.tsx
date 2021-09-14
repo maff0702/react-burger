@@ -5,7 +5,7 @@ import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import Ingredients from './ingredients';
 import { useDrop } from "react-dnd";
-import { ingredientCurrentIncrement } from '../../store/ingredientsSlice';
+import { ingredientCurrentIncrement, deletedAllCurrentIngredient } from '../../store/ingredientsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { sendOrder, addElementConstructor, addBunConstructor } from '../../store/constructorSlice'
 
@@ -37,7 +37,8 @@ export default function BurgerConstructor() {
     setModalActive(true);
     const idIngredients = [] as any;
     ingredients.forEach(element => idIngredients.push(element._id));
-    dispatch(sendOrder([bun._id, ...idIngredients, bun._id]))
+    dispatch(sendOrder([bun._id, ...idIngredients, bun._id]));
+    dispatch(deletedAllCurrentIngredient());
   }
   
   return (

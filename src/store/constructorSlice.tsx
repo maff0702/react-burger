@@ -62,6 +62,8 @@ const constructorSlice = createSlice({
     [sendOrder.pending.toString()]: (state) => { state.order.isLoading = true},
     [sendOrder.fulfilled.toString()]: (state, action) => {
       state.order.number = action.payload.order.number;
+      state.ingredients = [];
+      state.bun = {};
       state.order.name = action.payload.name;
       state.order.isLoading = false;
     },

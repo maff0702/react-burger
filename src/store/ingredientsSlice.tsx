@@ -27,13 +27,16 @@ const ingredientsSlice = createSlice({
     isModalIngredientDetails: false,
   },
   reducers: {
-    ingredientCurrentIncrement: (state ,action) => {
+    ingredientCurrentIncrement: (state, action) => {
       state.dataIngredients = state.dataIngredients.map((obj) => obj.type === 'bun' ? {...obj, __v: 0} : obj );
       state.dataIngredients = state.dataIngredients.map((obj) => obj._id === action.payload.item._id ? {...obj, __v: obj.__v + 1} : obj );
       state.dataIngredients = state.dataIngredients.map((obj) => (obj.type === 'bun' && obj._id === action.payload.item._id) ? {...obj, __v: 2} : obj);
     },
     ingredientCurrentDecrement: (state, action) => {
       state.dataIngredients = state.dataIngredients.map((obj)=> obj._id === action.payload.id ? {...obj, __v: obj.__v - 1} : obj );
+    },
+    deletedAllCurrentIngredient: (state) => {
+      state.dataIngredients = state.dataIngredients.map((obj)=> ({...obj, __v: 0}) );
     },
     addCurrentIngredient: (state, action) => {state.currentIngredient = action.payload.ingredient},
     deleteCurrentIngredient: (state) => {state.currentIngredient = ''},
@@ -59,7 +62,8 @@ export const {
   addCurrentIngredient,
   deleteCurrentIngredient,
   openModalIngredientDetails,
-  closeModalIngredientDetails
+  closeModalIngredientDetails,
+  deletedAllCurrentIngredient
 } = ingredientsSlice.actions;
 export default ingredientsSlice.reducer;
 

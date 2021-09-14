@@ -1,4 +1,5 @@
 import ingredientsPropType from '../../types/types.js'
+import PropTypes from 'prop-types';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import { useDispatch } from 'react-redux';
 import { ingredientCurrentDecrement } from '../../store/ingredientsSlice';
@@ -64,6 +65,7 @@ const IngedientElement = ({data, index}) => {
 
 IngedientElement.propTypes = {
   data: ingredientsPropType.isRequired,
+  index: PropTypes.number.isRequired,
 };
 
 export default IngedientElement;
