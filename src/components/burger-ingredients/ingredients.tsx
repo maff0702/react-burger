@@ -4,7 +4,7 @@ import styles from './burger-ingredient.module.css';
 import ingredientsPropType from '../../types/types.js'
 
 const Ingredients = ({data,type,title,setActive}) => (
-  <section>
+  <>
     <h3 className='text text_type_main-medium three'>{title}</h3>
     <div className={styles.burger__ingredient + " mt-6 mr-2 ml-4"}>
       { data.map((item) => (
@@ -16,7 +16,7 @@ const Ingredients = ({data,type,title,setActive}) => (
           />
       ))}
     </div>
-  </section>
+  </>
 )
 
 Ingredients.propTypes = {

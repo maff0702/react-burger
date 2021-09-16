@@ -10,17 +10,8 @@
   composes: container from "../../index.module.css" ;
 }
 
-.content__body{
-  display: flex;
-  justify-content: space-between;
-}
-
 @media screen and (max-width: 1200px) {
   .container {
     width: 768px;
-  }
-  .content__body{
-    flex-direction: column;
-    align-items: center;
   }
 }

@@ -5,7 +5,7 @@ export const requestIngredients = createAsyncThunk(
   'ingredients/requestIngredients',
   async function (_, { rejectWithValue }) {
     try {
-      const response = await fetch(`${API_URL}ingredients`);
+      const response = await fetch(`${API_URL}/ingredients`);
       if (!response.ok) {
         throw new Error('Ошибка сети ...');
       }

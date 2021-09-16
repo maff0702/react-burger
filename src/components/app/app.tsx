@@ -1,27 +1,37 @@
+import { useDispatch } from 'react-redux';
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import { useEffect } from 'react';
+
 import styles from './app.module.css';
 import Header from '../app-header/app-header';
-import BurgerIngredients from '../burger-ingredients/burger-ingredients';
-import BurgerConstructor from '../burger-constructor/burger-constructor';
-import { DndProvider } from 'react-dnd';
-import { HTML5Backend } from 'react-dnd-html5-backend';
-import { Provider } from 'react-redux';
-import store from '../../store';
+import Main from '../main/main';
+import Login from '../auth/login';
+import Register from '../auth/register';
+import ForgotPassword from '../auth/forgot-password';
+import ResetPassword from '../auth/reset-password';
+import Profile from '../user/profile';
 
-function App() {   
+import { requestRefreshToken } from '../../store/authSlice'
+
+function App() { 
+  const dispatch = useDispatch();
+  useEffect(()=>{dispatch(requestRefreshToken())},[dispatch]);
   return (
-    <Provider store={store}>
+    <Router>
       <div className={styles.wrapper}>
         <Header />
         <div className={styles.container}>
-          <main className={styles.content__body}>
-            <DndProvider backend={HTML5Backend}>
-              <BurgerIngredients />
-              <BurgerConstructor />
-            </DndProvider>
-          </main>
+          <Switch>
+            <Route exact path="/" component={Main} />
+            <Route exact path="/login" component={Login} />
+            <Route exact path="/register" component={Register} />
+            <Route exact path="/forgot-password" component={ForgotPassword} />
+            <Route exact path="/reset-password" component={ResetPassword} />
+            <Route exact path="/profile" component={Profile} />
+          </Switch>
         </div>
       </div>
-    </Provider>
+    </Router>
   );
 }
 

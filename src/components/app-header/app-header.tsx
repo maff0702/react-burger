@@ -1,5 +1,6 @@
+import { NavLink } from 'react-router-dom';
+import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './app-header.module.css';
-import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components'
 
 export default function Header() {
   return (
@@ -7,13 +8,23 @@ export default function Header() {
       <div className={styles.container +' pt-4 pb-4 '+ styles.header__content}>
         <nav className={styles.header__menu}>
           <ul className={styles.header__list}>
-            <li className={styles.header__link + ' pr-5 ' + styles.header__link_active}>
-              <BurgerIcon type="primary" />
-              <span className="ml-2">Конструктор</span>
+            <li className='pr-5'>
+              <NavLink 
+                exact to="/"
+                className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}
+              >
+                <BurgerIcon type="secondary" />
+                <span className="ml-2">Конструктор</span>
+              </NavLink>
             </li>
             <li className={" pl-5 ml-2 " + styles.header__link}>
-              <ListIcon type="secondary" />
-              <span className="ml-2">Лента заказов</span>
+              <NavLink 
+                exact to="/orders"
+                className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}
+              >
+                <ListIcon type="secondary" />
+                <span className="ml-2">Лента заказов</span>
+              </NavLink>
             </li>   
           </ul>
         </nav>
@@ -21,8 +32,13 @@ export default function Header() {
           <Logo />
         </div>
         <div className={styles.header__profile }>
-          <ProfileIcon type="secondary" />
-          <span className="ml-2 ">Личный кабинет</span>
+          <NavLink 
+            exact to="/profile"
+            className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}
+          >
+            <ProfileIcon type="secondary" />
+            <span className="ml-2 ">Личный кабинет</span>
+          </NavLink>
         </div>
       </div>
     </header>

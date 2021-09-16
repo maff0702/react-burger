@@ -47,7 +47,17 @@
   align-items: center;
 }
 
-.header__link_active{
+.link{
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  text-decoration: none;
+  color: #8585AD;
+}
+.link_active svg{
+  fill: #fff;
+}
+.link_active{
   color: #ffffff;
 }
 

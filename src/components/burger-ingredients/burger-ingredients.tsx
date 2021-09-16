@@ -27,7 +27,7 @@ export default function BurgerIngredients() {
     if(bunList <= scrollSection) setCurrent('one');
     if(sauceList <= scrollSection) setCurrent('two');
     if(mainList <= scrollSection) setCurrent('three');
-  }
+  };
   
 
   return (
@@ -60,30 +60,30 @@ export default function BurgerIngredients() {
         ref={ingredientsSection}
         onScroll={onTabScroll}
       >
-        <span ref={bunRef}>
+        <section ref={bunRef}>
           <Ingredients
             data={dataIngredients}
             type="bun"
             title="Булки"
             setActive={setModalActive}
           />
-        </span>
-        <span ref={sauceRef}>
+        </section>
+        <section ref={sauceRef}>
           <Ingredients
             data={dataIngredients}
             type="sauce"
             title="Соусы"
             setActive={setModalActive}
           />
-        </span>
-        <span ref={mainRef}>
+        </section>
+        <section ref={mainRef}>
           <Ingredients
             data={dataIngredients}
             type="main"
             title="Начинки"
             setActive={setModalActive}
           />
-        </span>
+        </section>
         <Modal
           active={isModalActive}
           setActive={setModalActive}
