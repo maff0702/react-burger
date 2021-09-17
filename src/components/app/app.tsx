@@ -11,11 +11,13 @@ import ForgotPassword from '../auth/forgot-password';
 import ResetPassword from '../auth/reset-password';
 import Profile from '../user/profile';
 
-import { requestRefreshToken } from '../../store/authSlice'
+import { requestCheckAuth } from '../../store/authSlice'
 
 function App() { 
   const dispatch = useDispatch();
-  useEffect(()=>{dispatch(requestRefreshToken())},[dispatch]);
+  useEffect(()=>{
+    if(localStorage.getItem('accessToken')) dispatch(requestCheckAuth())
+  },[dispatch]);
   return (
     <Router>
       <div className={styles.wrapper}>

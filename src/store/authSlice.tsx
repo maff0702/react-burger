@@ -1,24 +1,12 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { API_URL } from '../utils/constants';
+import AuthService from "../services/AuthService";
 
 export const requestRegister = createAsyncThunk(
   'auth/register',
-  async function (formData :any, { rejectWithValue }) {    
+  async function (formData :any, { rejectWithValue }) {  
     try {
-      const response = await fetch(`${API_URL}/auth/register`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData.state)
-      });
-      if (!response.ok) {
-        throw new Error('Ошибка сети ...');
-      }
-      const successResponse = await response.json();
-      console.log(successResponse);
-      
-      return successResponse;
+      const response = await AuthService.register(formData.state);
+      return response.data;
     }catch (error) {
       return rejectWithValue(false);
     }
@@ -28,45 +16,30 @@ export const requestLogin = createAsyncThunk(
   'auth/login',
   async function (formData :any, { rejectWithValue }) {    
     try {
-      const response = await fetch(`${API_URL}/auth/login`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(formData.state)
-      });
-      if (!response.ok) {
-        throw new Error('Ошибка сети ...');
-      }
-      const successResponse = await response.json();
-      console.log(successResponse);
-      
-      return successResponse;
+      const response = await AuthService.login(formData.state);    
+      return response.data;
     }catch (error) {
       return rejectWithValue(false);
     }
   }
 )
-export const requestRefreshToken = createAsyncThunk(
-  'auth/refreshToken',
+export const requestLogout = createAsyncThunk(
+  'auth/logout',
   async function (_, { rejectWithValue }) {
     try {
-      const response = await fetch(`${API_URL}/auth/token `, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({token: localStorage.getItem('refreshToken')})
-      });
-      console.log(response);
-      if (!response.ok) {
-        throw new Error('Ошибка сети ...');
-      }
-      const successResponse = await response.json();
-      
-      localStorage.setItem('refreshToken', successResponse.refreshToken);
-      
-      return successResponse;
+      const response = await AuthService.logout();
+      return response.data;
+    }catch (error) {
+      return rejectWithValue(false);
+    }
+  }
+)
+export const requestCheckAuth = createAsyncThunk(
+  'auth/checkAuth',
+  async function (_, { rejectWithValue }) {
+    try {
+      const response = await AuthService.checkUser();  
+      return response.data;
     }catch (error) {
       return rejectWithValue(false);
     }
@@ -77,10 +50,8 @@ const authSlice = createSlice({
   name: 'auth',
   initialState: {
     user: {} as any,
+    isAuth: false,
     isError: false,
-    isLoading: false,
-    accessToken: '',
-    refreshToken: '',
   },
   reducers: {
     ingredientCurrentIncrement: (state, action) => {
@@ -88,27 +59,36 @@ const authSlice = createSlice({
     },
   },
   extraReducers: {
-    [requestRegister.pending.toString()]: (state) => { console.log(state);
-     },
     [requestRegister.fulfilled.toString()]: (state, action) => {
-      console.log(state);
-      state.user = action.payload.user
-      state.accessToken = action.payload.accessToken
-      state.refreshToken = action.payload.refreshToken
+      state.user = action.payload.user;
+      state.isAuth = true;
       localStorage.setItem('refreshToken', action.payload.refreshToken);
+      localStorage.setItem('accessToken', action.payload.accessToken.split(' ')[1]);
     },
-    [requestRegister.rejected.toString()]: (state) => {},
-    [requestLogin.pending.toString()]: (state) => { console.log(state);
-    },
-    [requestLogin.fulfilled.toString()]: (state, action) => {
-      console.log(state);
-      state.user = action.payload.user
-      state.accessToken = action.payload.accessToken
-      state.refreshToken = action.payload.refreshToken
+    [requestRegister.rejected.toString()]: (state) => {state.isError = true},
+
+    [requestLogin.fulfilled.toString()]: (state, action) => { 
+      state.user = action.payload.user;
+      state.isAuth = true;
       localStorage.setItem('refreshToken', action.payload.refreshToken);
+      localStorage.setItem('accessToken', action.payload.accessToken.split(' ')[1]);
     },
-    [requestLogin.rejected.toString()]: (state) => {},
+    [requestLogin.rejected.toString()]: (state) => {state.isError = true},
+
+    [requestLogout.fulfilled.toString()]: (state) => {
+      state.user = {};
+      state.isAuth = false;
+      localStorage.removeItem('refreshToken');
+      localStorage.removeItem('accessToken');
     },
+    [requestLogout.rejected.toString()]: (state) => {state.isError = true},
+
+    [requestCheckAuth.fulfilled.toString()]: (state, action) => {
+      state.user = action.payload.user;
+      state.isAuth = true;
+    },
+    [requestCheckAuth.rejected.toString()]: (state) => {state.isError = true},
+  }, 
 })
 
 export const {

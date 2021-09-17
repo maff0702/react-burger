@@ -17,7 +17,7 @@ export default function BurgerIngredients() {
   const sauceRef = useRef(null) as any
   const mainRef = useRef(null) as any
 
-  useEffect(() => {dispatch(requestIngredients())},[dispatch])
+  useEffect(() => {if(dataIngredients.length===0)dispatch(requestIngredients())},[dispatch])
 
   const onTabScroll = () => {
     const scrollSection = ingredientsSection.current.getBoundingClientRect().top;

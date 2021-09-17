@@ -1,18 +1,27 @@
 import { BrowserRouter as Router, Switch, Route, NavLink } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { requestLogout } from '../../store/authSlice';
 import styles from './profile.module.css';
 import './styles.css';
 import ProfileSettings from './profile-settings';
 import Orders from './orders'
+import { ProtectedRoute } from '../ProtectedRoute/protected-route';
 
 const Profile = () => {
+  const dispatch = useDispatch();
+  const handleLogout = () => {
+    dispatch(requestLogout());
+  }
+
   return (
     <Router>
+      <ProtectedRoute path="/profile">
       <div className={styles.profile__container}>
         <div className={styles.profile__menu}>
           <ul className={"text text_type_main-medium text_color_inactive "+styles.menu__list}>
             <li><NavLink exact to='/profile' className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}>Профиль</NavLink></li>
             <li><NavLink exact to='/profile/orders' className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}>История заказов</NavLink></li>
-            <li>Выход</li>
+            <li onClick={handleLogout}>Выход</li>
           </ul>
           <p className="text text_type_main-default text_color_inactive mt-20 ">В этом разделе вы можете изменить свои персональные данные</p>
         </div>
@@ -23,6 +32,7 @@ const Profile = () => {
           </Switch>
         </div>
       </div>
+      </ProtectedRoute>
     </Router>
   )
 }
