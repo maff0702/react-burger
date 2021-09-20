@@ -1,11 +1,11 @@
 import { Route, Redirect  } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useSelector } from 'react-redux';
+import PropTypes from 'prop-types';
 
 export function ProtectedRoute({ children, ...rest }) {
-  const dispatch = useDispatch();
     let { isAuth } = useSelector((state :any) => state.auth);
-    isAuth = localStorage.getItem('accessToken')
-        
+    isAuth = localStorage.getItem('accessToken');
+    
     return (
     <Route
       {...rest}
@@ -23,4 +23,9 @@ export function ProtectedRoute({ children, ...rest }) {
       }
     />
   );
-} 
+}
+
+ProtectedRoute.propTypes = {
+  children: PropTypes.element.isRequired,
+  rest: PropTypes.object
+};

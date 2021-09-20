@@ -6,8 +6,9 @@ import IngredientDeatails from '../ingredient-details/ingredient-details';
 import Ingredients from './ingredients';
 import { useSelector, useDispatch } from 'react-redux';
 import { requestIngredients } from '../../store/ingredientsSlice';
+import { Route } from "react-router-dom";
 
-export default function BurgerIngredients() {
+const BurgerIngredients = () => {
   const dispatch = useDispatch();
   const {isError, isLoading, dataIngredients} = useSelector((state: any) => state.ingredients);
   const [current, setCurrent] = useState('one');
@@ -84,14 +85,18 @@ export default function BurgerIngredients() {
             setActive={setModalActive}
           />
         </section>
-        <Modal
-          active={isModalActive}
-          setActive={setModalActive}
-          title="Детали ингредиента"
-        >
-          <IngredientDeatails/>
-        </Modal>
+        {isModalActive && <Route path={`/ingredients/:id`}>
+          <Modal
+            active={isModalActive}
+            setActive={setModalActive}
+            title="Детали ингредиента"
+          >
+            <IngredientDeatails/>
+          </Modal>
+        </Route>}
       </section>}
     </section>
   );
 }
+
+export default BurgerIngredients;

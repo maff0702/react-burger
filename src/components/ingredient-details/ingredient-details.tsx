@@ -3,6 +3,7 @@ import { useSelector } from 'react-redux';
 
 export default function IngredientDetails() {
   const info = useSelector((state: any) => state.ingredients.currentIngredient)
+  
   return(
   <div className={styles.details__ingredient}>
     <span><img src={info.image} alt={info.name} height='240'/></span>

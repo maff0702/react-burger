@@ -1,4 +1,4 @@
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -20,6 +20,8 @@ function App() {
   useEffect(()=>{
     if(localStorage.getItem('accessToken')) dispatch(requestCheckAuth())
   },[dispatch]);
+  const { isModalIngredientDetails } = useSelector((state:any) => state.ingredients);
+  
 
   return (
     <Router>
@@ -27,13 +29,13 @@ function App() {
         <Header />
         <div className={styles.container}>
           <Switch>
-            <Route exact path="/" component={Main} />
+            <Route exact={!isModalIngredientDetails} path="/" component={Main} />
             <Route exact path="/login" component={Login} />
             <Route exact path="/register" component={Register} />
             <Route exact path="/forgot-password" component={ForgotPassword} />
             <Route exact path="/reset-password" component={ResetPassword} />
             <Route path="/profile" component={Profile} />
-            <Route exact path="/ingredients" component={Ingredient} />
+            <Route exact path="/ingredients/:id" component={Ingredient} />
             <Route component={NotFound} />
           </Switch>
         </div>

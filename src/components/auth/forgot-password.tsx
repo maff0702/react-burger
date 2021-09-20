@@ -32,6 +32,7 @@ const ForgotPassword = () => {
       return <Redirect to='/' />
   }
   //Нельзя вернуться на предыдущую страницу, если ответ от сервера успешный
+  //Ответ от сервера успешен всегда, даже когда поле пустое
   if(forgotStatus){
     return <Redirect to={{pathname: '/reset-password',state: { from: history.location }}} />
   }

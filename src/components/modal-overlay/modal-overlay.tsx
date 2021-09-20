@@ -1,14 +1,19 @@
 import styles from './modal-overlay.module.css';
 import PropTypes from 'prop-types';
 import { useEffect } from 'react';
-import { deleteCurrentIngredient } from '../store/ingredientsSlice';
+import { deleteCurrentIngredient } from '../../store/ingredientsSlice';
 import { useDispatch } from 'react-redux';
+import { closeModalIngredientDetails } from '../../store/ingredientsSlice';
+import { useHistory } from 'react-router-dom';
 
 const ModalOverlay = (props) => {
   const dispatch = useDispatch();
+  const history = useHistory();
   const closeModals = () =>{
     props.setActive(false);
     dispatch(deleteCurrentIngredient());
+    dispatch(closeModalIngredientDetails());
+    history.replace({ pathname: '/' });
   }
   const closeModal = ({key}: KeyboardEvent) => {
     if (key === "Escape" ) closeModals();

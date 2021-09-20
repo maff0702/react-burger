@@ -1,22 +1,13 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { API_URL } from '../utils/constants';
+import axiosAPI from "../services/main-service";
 
 export const sendOrder = createAsyncThunk(
   'ingredients/sendOrder',
   async function (idIngredients :any,{ rejectWithValue }) { 
     try {
-      const response = await fetch(`${API_URL}/orders`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify({ingredients: idIngredients})
-      });
-      if (!response.ok) {
-       throw new Error('Ошибка сети ...');
-     }
-      const successResponse = await response.json();
-      return successResponse;
+      //При отправке с заголовком Authorization запрос идет дольше
+      const response = await axiosAPI.sendOrder(idIngredients);
+      return response.data;
     }catch (error) {
       return rejectWithValue(false);
     }

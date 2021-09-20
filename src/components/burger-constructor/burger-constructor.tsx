@@ -7,10 +7,12 @@ import Ingredients from './ingredients';
 import { useDrop } from "react-dnd";
 import { ingredientCurrentIncrement, deletedAllCurrentIngredient } from '../../store/ingredientsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { sendOrder, addElementConstructor, addBunConstructor } from '../../store/constructorSlice'
+import { sendOrder, addElementConstructor, addBunConstructor } from '../../store/constructorSlice';
+import { useHistory } from 'react-router-dom';
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch();
+  const history = useHistory();
   const [isModalActive, setModalActive] = useState(false);
   const isObjectEmpty = object =>(JSON.stringify(object) !== '{}' ? true : false)
   const ingredients = useSelector((state: any) => state.constructors.ingredients);
@@ -34,11 +36,15 @@ export default function BurgerConstructor() {
   }, 0) + (bun.price ? bun.price*2 : 0);
 
   const handleClick = () => {
-    setModalActive(true);
-    const idIngredients = [] as any;
-    ingredients.forEach(element => idIngredients.push(element._id));
-    dispatch(sendOrder([bun._id, ...idIngredients, bun._id]));
-    dispatch(deletedAllCurrentIngredient());
+    if(localStorage.getItem('accessToken')){
+      setModalActive(true);
+      const idIngredients = [] as any;
+      ingredients.forEach(element => idIngredients.push(element._id));
+      dispatch(sendOrder([bun._id, ...idIngredients, bun._id]));
+      dispatch(deletedAllCurrentIngredient());
+    } else {   
+      history.replace({pathname: '/login'})
+    }
   }
   
   return (

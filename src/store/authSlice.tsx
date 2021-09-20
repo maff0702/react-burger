@@ -89,11 +89,7 @@ const authSlice = createSlice({
     forgotStatus: false,
     resetStatus: false
   },
-  reducers: {
-    ingredientCurrentIncrement: (state, action) => {
-
-    },
-  },
+  reducers: {},
   extraReducers: {
     [requestRegister.fulfilled.toString()]: (state, action) => {
       state.user = action.payload.user;
