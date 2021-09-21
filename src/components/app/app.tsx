@@ -10,7 +10,7 @@ import Register from '../../pages/auth/register';
 import ForgotPassword from '../../pages/auth/forgot-password';
 import ResetPassword from '../../pages/auth/reset-password';
 import Profile from '../../pages/user/profile';
-import Ingredient from '../../pages/user/ingredient-page/ingredient';
+import Ingredient from '../../pages/ingredient-page/ingredient';
 import NotFound from '../../pages/not-found/not-fount';
 
 import { requestCheckAuth } from '../../store/authSlice'
