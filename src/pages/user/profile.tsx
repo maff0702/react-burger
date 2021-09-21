@@ -5,7 +5,7 @@ import styles from './profile.module.css';
 import './styles.css';
 import ProfileSettings from './profile-settings';
 import Orders from './profile-orders'
-import { ProtectedRoute } from '../ProtectedRoute/protected-route';
+import { ProtectedRoute } from '../../components/protected-route/protected-route';
 
 const Profile = () => {
   const dispatch = useDispatch();

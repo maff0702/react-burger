@@ -16,7 +16,7 @@ export const requestLogin = createAsyncThunk(
   'auth/login',
   async function (formData :any, { rejectWithValue }) {    
     try {
-      const response = await AuthService.login(formData.state);    
+      const response = await AuthService.login(formData.state);
       return response.data;
     }catch (error) {
       return rejectWithValue(false);

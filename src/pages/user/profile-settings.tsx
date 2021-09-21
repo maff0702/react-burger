@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { Input} from '@ya.praktikum/react-developer-burger-ui-components';
+import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 import styles from './profile.module.css';
 import './styles.css';
 import { requestUpdateUser } from '../../store/authSlice';
@@ -33,15 +33,26 @@ const ProfileSettings = () => {
       [name]: value
     });
   }
-  const onIconClick = () => {
+  const handleClick = () => {
     dispatch(requestUpdateUser({state}))
+  }
+  const handleClickCancel = () => {
+    setState({
+      ...state,
+      name: user.name,
+      email: user.email
+    })
   }
 
   return (
     <div className={styles.profile__form}>
-      <Input icon='EditIcon' onIconClick={onIconClick} type={'text'} placeholder={'Имя'} onChange={onChange} value={state.name} name={'name'}/>
-      <Input icon='EditIcon' onIconClick={onIconClick} type={'email'} placeholder={'Логин'} onChange={onChange} value={state.email} name={'email'}/>
+      <Input icon='EditIcon' onIconClick={handleClick} type={'text'} placeholder={'Имя'} onChange={onChange} value={state.name} name={'name'}/>
+      <Input icon='EditIcon' onIconClick={handleClick} type={'email'} placeholder={'Логин'} onChange={onChange} value={state.email} name={'email'}/>
       <Input icon='EditIcon' type={'password'} placeholder={'Пароль'} onChange={onChange} value={state.password} name={'password'}/>
+      <span>
+        <span><Button onClick={handleClickCancel} type="primary" size="medium">Отменить изменения</Button></span>
+        <span className='ml-10'><Button onClick={handleClick} type="primary" size="medium">Сохранить</Button></span>
+      </span>
     </div>
   )
 }

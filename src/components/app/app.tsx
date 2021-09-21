@@ -4,14 +4,14 @@ import { useEffect } from 'react';
 
 import styles from './app.module.css';
 import Header from '../app-header/app-header';
-import Main from '../main/main';
-import Login from '../auth/login';
-import Register from '../auth/register';
-import ForgotPassword from '../auth/forgot-password';
-import ResetPassword from '../auth/reset-password';
-import Profile from '../user/profile';
-import Ingredient from '../ingredient-page/ingredient';
-import NotFound from '../not-found/not-fount';
+import Main from '../../pages/main/main';
+import Login from '../../pages/auth/login';
+import Register from '../../pages/auth/register';
+import ForgotPassword from '../../pages/auth/forgot-password';
+import ResetPassword from '../../pages/auth/reset-password';
+import Profile from '../../pages/user/profile';
+import Ingredient from '../../pages/user/ingredient-page/ingredient';
+import NotFound from '../../pages/not-found/not-fount';
 
 import { requestCheckAuth } from '../../store/authSlice'
 
