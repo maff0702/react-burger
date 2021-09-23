@@ -3,14 +3,10 @@ import axiosAPI from "../services/main-service";
 
 export const sendOrder = createAsyncThunk(
   'ingredients/sendOrder',
-  async function (idIngredients :any,{ rejectWithValue }) { 
-    try {
-      //При отправке с заголовком Authorization запрос идет дольше
-      const response = await axiosAPI.sendOrder(idIngredients);
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async (idIngredients :any) => { 
+    //При отправке с заголовком Authorization запрос идет дольше
+    const response = await axiosAPI.sendOrder(idIngredients);
+    return response.data;
   }
 )
 
@@ -25,7 +21,6 @@ const constructorSlice = createSlice({
       isError: false,
       isLoading: false,
     },
-    isModalOrderDetails: false,
   },
   reducers: {
     addElementConstructor: (state, action) => {
@@ -46,8 +41,6 @@ const constructorSlice = createSlice({
       newArr.splice(action.payload.hoverIndex, 0, dragIngredient);      
       state.ingredients = [...newArr];
     },
-    openModalOrderDetails: (state) => {state.isModalOrderDetails = true},
-    closeModalOrderDetails: (state) => {state.isModalOrderDetails = false},
   },
   extraReducers: {
     [sendOrder.pending.toString()]: (state) => { state.order.isLoading = true},
@@ -72,7 +65,5 @@ export const {
   addBunConstructor,
   deleteElementConstructor,
   moveIngredientConstructor,
-  openModalOrderDetails,
-  closeModalOrderDetails
 } = constructorSlice.actions;
 export default constructorSlice.reducer;

@@ -3,13 +3,9 @@ import axiosAPI from "../services/main-service";
 
 export const requestIngredients = createAsyncThunk(
   'ingredients/requestIngredients',
-  async function (_, { rejectWithValue }) {
-    try {
-      const response = await axiosAPI.getIngredients();  
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async () => {
+    const response = await axiosAPI.getIngredients();  
+    return response.data;
   }
 )
 
@@ -62,4 +58,3 @@ export const {
   deletedAllCurrentIngredient
 } = ingredientsSlice.actions;
 export default ingredientsSlice.reducer;
-

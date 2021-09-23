@@ -1,8 +1,9 @@
+import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
+
 import ingredientsPropType from '../../types/types.js'
 import styles from './burger-constructor.module.css';
 import IngedientElement from './ingredient-element';
-import { useSelector } from 'react-redux';
 
 const Ingredients = () => {
   const listIngredients = useSelector((state: any) => state.constructors.ingredients);

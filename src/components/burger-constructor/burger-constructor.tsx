@@ -1,14 +1,16 @@
 import { useState } from 'react';
-import styles from './burger-constructor.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+import { useDrop } from "react-dnd";
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
+import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import Ingredients from './ingredients';
-import { useDrop } from "react-dnd";
+
 import { ingredientCurrentIncrement, deletedAllCurrentIngredient } from '../../store/ingredientsSlice';
-import { useDispatch, useSelector } from 'react-redux';
 import { sendOrder, addElementConstructor, addBunConstructor } from '../../store/constructorSlice';
-import { useHistory } from 'react-router-dom';
 
 export default function BurgerConstructor() {
   const dispatch = useDispatch();

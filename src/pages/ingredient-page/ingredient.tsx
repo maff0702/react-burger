@@ -1,15 +1,11 @@
 import styles from './ingredient.module.css';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { useEffect } from 'react';
-import { requestIngredients } from '../../store/ingredientsSlice';
 
 const Ingredient = () => {
-  const dispatch = useDispatch();
-  const paramUrl = useParams();;
+  const { id } = useParams();
   const {dataIngredients} = useSelector((state: any) => state.ingredients);
-  useEffect(() => {if(dataIngredients.length===0)dispatch(requestIngredients())},[dispatch])
-  const info = dataIngredients.filter((el)=>el._id === paramUrl.id)[0];
+  const info = dataIngredients.filter((el)=>el._id === id)[0];
 
   return(
     <>
@@ -35,7 +31,7 @@ const Ingredient = () => {
           <span>{info.carbohydrates}</span>
           </p>
         </span>
-      </div> : <span>Ошибка</span>
+      </div> : <span>Загрузка...</span>
       }
     </>
   )

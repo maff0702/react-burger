@@ -1,5 +1,6 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { Logo, BurgerIcon, ListIcon, ProfileIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import styles from './app-header.module.css';
 
 export default function Header() {
@@ -29,7 +30,7 @@ export default function Header() {
           </ul>
         </nav>
         <div className={styles.header__logo}>
-          <Logo />
+          <Link to="/"><Logo /></Link>
         </div>
         <div className={styles.header__profile }>
           <NavLink 

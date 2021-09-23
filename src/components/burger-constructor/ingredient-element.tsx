@@ -1,11 +1,13 @@
+import { useRef} from 'react';
+import { useDispatch } from 'react-redux';
+import { useDrag, useDrop } from 'react-dnd';
+import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import ingredientsPropType from '../../types/types.js'
 import PropTypes from 'prop-types';
-import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import { useDispatch } from 'react-redux';
+
 import { ingredientCurrentDecrement } from '../../store/ingredientsSlice';
 import { deleteElementConstructor, moveIngredientConstructor } from '../../store/constructorSlice';
-import { useDrag, useDrop } from 'react-dnd';
-import { useRef} from 'react';
 
 interface DragItem {
   index: number

@@ -1,8 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
+
 import styles from './profile.module.css';
 import './styles.css';
+
 import { requestUpdateUser } from '../../store/authSlice';
 
 const ProfileSettings = () => {
@@ -22,7 +24,7 @@ const ProfileSettings = () => {
         email: user.email
       })
   }
-  },[user])
+  },[user]);
 
   const onChange = event => {
     const target = event.target;
@@ -33,10 +35,12 @@ const ProfileSettings = () => {
       [name]: value
     });
   }
-  const handleClick = () => {
+  const onSubmit = (e) => {
+    e.preventDefault();
     dispatch(requestUpdateUser({state}))
   }
-  const handleClickCancel = () => {
+  const handleClickCancel = (e) => {
+    e.preventDefault();
     setState({
       ...state,
       name: user.name,
@@ -46,13 +50,15 @@ const ProfileSettings = () => {
 
   return (
     <div className={styles.profile__form}>
-      <Input icon='EditIcon' onIconClick={handleClick} type={'text'} placeholder={'Имя'} onChange={onChange} value={state.name} name={'name'}/>
-      <Input icon='EditIcon' onIconClick={handleClick} type={'email'} placeholder={'Логин'} onChange={onChange} value={state.email} name={'email'}/>
-      <Input icon='EditIcon' type={'password'} placeholder={'Пароль'} onChange={onChange} value={state.password} name={'password'}/>
-      <span>
-        <span><Button onClick={handleClickCancel} type="primary" size="medium">Отменить изменения</Button></span>
-        <span className='ml-10'><Button onClick={handleClick} type="primary" size="medium">Сохранить</Button></span>
-      </span>
+      <form onSubmit={onSubmit}>
+        <Input icon='EditIcon' onIconClick={onSubmit} type={'text'} placeholder={'Имя'} onChange={onChange} value={state.name} name={'name'}/>
+        <Input icon='EditIcon' onIconClick={onSubmit} type={'email'} placeholder={'Логин'} onChange={onChange} value={state.email} name={'email'}/>
+        <Input icon='EditIcon' type={'password'} placeholder={'Пароль'} onChange={onChange} value={state.password} name={'password'}/>
+        <span className={styles.button__group}>
+          <Button type="primary" size="medium">Сохранить</Button>
+          <Button onClick={handleClickCancel} type="primary" size="medium">Отменить изменения</Button>
+        </span>
+      </form>
     </div>
   )
 }

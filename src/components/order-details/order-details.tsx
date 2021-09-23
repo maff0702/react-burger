@@ -1,7 +1,7 @@
+import { useSelector } from 'react-redux';
+
 import styles from './order-details.module.css';
 import readyIcon from '../../images/ready-icon.gif';
-import PropTypes from 'prop-types';
-import { useSelector } from 'react-redux';
 
 export default function OrderDetails() {
   const {number,isError,isLoading} = useSelector((state:any) => state.constructors.order);
@@ -21,11 +21,3 @@ export default function OrderDetails() {
   </div> 
   )
 }
-
-OrderDetails.propTypes = {
-  info: PropTypes.shape({
-    isError: PropTypes.bool,
-    isLoading: PropTypes.bool,
-    order: PropTypes.number
-  })
-};

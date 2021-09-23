@@ -46,3 +46,10 @@
   flex-direction: column;
   align-items: center;
 }
+
+.button__group{
+  width: 100%;
+  display: flex;
+  flex-direction: row-reverse;
+  justify-content: space-between;
+}

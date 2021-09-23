@@ -1,24 +1,17 @@
-import { useState, useRef, useEffect } from 'react';
-import styles from './burger-ingredient.module.css';
+import { useState, useRef } from 'react';
+import { useSelector } from 'react-redux';
 import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
-import Modal from '../modal/modal';
-import IngredientDeatails from '../ingredient-details/ingredient-details';
+
+import styles from './burger-ingredient.module.css';
 import Ingredients from './ingredients';
-import { useSelector, useDispatch } from 'react-redux';
-import { requestIngredients } from '../../store/ingredientsSlice';
-import { Route } from "react-router-dom";
 
 const BurgerIngredients = () => {
-  const dispatch = useDispatch();
   const {isError, isLoading, dataIngredients} = useSelector((state: any) => state.ingredients);
   const [current, setCurrent] = useState('one');
-  const [isModalActive, setModalActive] = useState(false);
   const ingredientsSection = useRef(null) as any
   const bunRef = useRef(null) as any
   const sauceRef = useRef(null) as any
   const mainRef = useRef(null) as any
-
-  useEffect(() => {if(dataIngredients.length===0)dispatch(requestIngredients())},[dispatch])
   
   const onTabScroll = () => {
     const scrollSection = ingredientsSection.current.getBoundingClientRect().top;
@@ -66,7 +59,6 @@ const BurgerIngredients = () => {
             data={dataIngredients}
             type="bun"
             title="Булки"
-            setActive={setModalActive}
           />
         </section>
         <section ref={sauceRef}>
@@ -74,7 +66,6 @@ const BurgerIngredients = () => {
             data={dataIngredients}
             type="sauce"
             title="Соусы"
-            setActive={setModalActive}
           />
         </section>
         <section ref={mainRef}>
@@ -82,18 +73,8 @@ const BurgerIngredients = () => {
             data={dataIngredients}
             type="main"
             title="Начинки"
-            setActive={setModalActive}
           />
         </section>
-        {isModalActive && <Route path={`/ingredients/:id`}>
-          <Modal
-            active={isModalActive}
-            setActive={setModalActive}
-            title="Детали ингредиента"
-          >
-            <IngredientDeatails/>
-          </Modal>
-        </Route>}
       </section>}
     </section>
   );

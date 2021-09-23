@@ -1,5 +1,3 @@
-import { API_URL } from "../utils/constants";
-import axios from "axios";
 import axiosAPI from "../utils/api";
 import {AxiosResponse} from 'axios';
 

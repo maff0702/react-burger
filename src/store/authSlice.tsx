@@ -3,79 +3,51 @@ import AuthService from "../services/auth-service";
 
 export const requestRegister = createAsyncThunk(
   'auth/register',
-  async function (formData :any, { rejectWithValue }) {  
-    try {
-      const response = await AuthService.register(formData.state);
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async (formData :any) => {
+    const response = await AuthService.register(formData.state);
+    return response.data;
   }
 )
 export const requestLogin = createAsyncThunk(
   'auth/login',
-  async function (formData :any, { rejectWithValue }) {    
-    try {
-      const response = await AuthService.login(formData.state);
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async (formData :any) => {
+    const response = await AuthService.login(formData.state);
+    return response.data;
   }
 )
 export const requestLogout = createAsyncThunk(
   'auth/logout',
-  async function (_, { rejectWithValue }) {
-    try {
-      const response = await AuthService.logout();
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async () => {
+    const response = await AuthService.logout();
+    return response.data;
   }
 )
 export const requestCheckAuth = createAsyncThunk(
   'auth/checkAuth',
-  async function (_, { rejectWithValue }) {
-    try {
-      const response = await AuthService.checkUser();  
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async () => {
+    const response = await AuthService.checkUser();
+    return response.data;
   }
 )
 export const requestUpdateUser = createAsyncThunk(
   'auth/updateUser',
-  async function (formData :any, { rejectWithValue }) {    
-    try {
-      const response = await AuthService.updateUser(formData.state);
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async (formData :any) => {
+    const response = await AuthService.updateUser(formData.state);
+    return response.data;
   }
 )
 export const requestForgotPassword = createAsyncThunk(
   'auth/forgotPassword',
-  async function ({email} :any, { rejectWithValue }) {    
-    try {
-      const response = await AuthService.forgotPassword(email);
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async ({email} :any) => {
+    const response = await AuthService.forgotPassword(email);
+    return response.data;
   }
 )
 export const requestResetPassword = createAsyncThunk(
   'auth/resetPassword',
-  async function (formData :any, { rejectWithValue }) {    
-    try {
-      const response = await AuthService.resetPassword(formData);
-      return response.data;
-    }catch (error) {
-      return rejectWithValue(false);
-    }
+  async (formData :any) => {
+    const response = await AuthService.resetPassword(formData);
+    return response.data;
   }
 )
 
@@ -147,8 +119,5 @@ const authSlice = createSlice({
   }, 
 })
 
-export const {
-  
-} = authSlice.actions;
+// export const {} = authSlice.actions;
 export default authSlice.reducer;
-
