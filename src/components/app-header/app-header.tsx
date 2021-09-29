@@ -20,7 +20,7 @@ export default function Header() {
             </li>
             <li className={" pl-5 ml-2 " + styles.header__link}>
               <NavLink 
-                exact to="/orders"
+                exact to="/feed"
                 className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}
               >
                 <ListIcon type="secondary" />
@@ -34,7 +34,7 @@ export default function Header() {
         </div>
         <div className={styles.header__profile }>
           <NavLink 
-            exact to="/profile"
+            exact to="/profile/orders"
             className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}
           >
             <ProfileIcon type="secondary" />

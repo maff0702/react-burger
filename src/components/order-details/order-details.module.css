@@ -4,9 +4,10 @@
   justify-content: center;
   align-items: center;
 }
+.details__order p,
 .details__order span {
   text-align: center;
 }
-.details__order span:first-child {
+.details__order p:first-child {
   text-shadow: 0px 0px 16px rgba(51, 51, 255, 0.25), 0px 0px 8px rgba(51, 51, 255, 0.25), 0px 4px 32px rgba(51, 51, 255, 0.5);
 }

@@ -11,9 +11,11 @@ import ForgotPassword from '../../pages/auth/forgot-password';
 import ResetPassword from '../../pages/auth/reset-password';
 import Profile from '../../pages/user/profile';
 import Ingredient from '../../pages/ingredient-page/ingredient';
-import NotFound from '../../pages/not-found/not-fount';
+import Feed from '../../pages/feed/feed';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
+import Order from '../../pages/order-page/order';
+import NotFound from '../../pages/not-found/not-fount';
 
 import { requestCheckAuth } from '../../store/authSlice'
 import { requestIngredients } from '../../store/ingredientsSlice';
@@ -41,6 +43,8 @@ function App() {
           <Route exact path="/forgot-password" component={ForgotPassword} />
           <Route exact path="/reset-password" component={ResetPassword} />
           <Route path="/profile" component={Profile} />
+          <Route exact path="/feed" component={Feed} />
+          <Route exact path="/feed/:id" component={Order} />
           <Route exact path="/ingredients/:id" component={Ingredient} />
           <Route component={NotFound} />
         </Switch>
