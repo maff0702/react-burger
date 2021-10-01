@@ -1,6 +1,5 @@
 .order__card{
   width: calc(100% - 64px);
-  min-height: 176px;
   padding: 24px;
   background-color: rgba(28, 28, 33, 1);
   border-radius: 24px;
@@ -22,6 +21,10 @@
   justify-content: space-between;
   height: 64px;
   margin-top: 24px;
+}
+.order__status_done{
+  width: 100%;
+  color: #00CCCC;
 }
 .card__image{
   width: 436px;
@@ -58,7 +61,7 @@
   text-align: center;
 }
 .card__price{
-  width: 76px;
+  max-width: 150px;
   display: flex;
   align-items: center;
   justify-content: space-between;

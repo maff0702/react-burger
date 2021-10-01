@@ -5,7 +5,7 @@ import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components
 
 import styles from './order.module.css';
 
-function Order() { 
+function Order() {
   
   return (
     <main className={styles.content__body}>

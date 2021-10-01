@@ -1,39 +1,53 @@
+import { useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import moment from 'moment';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './order-card.module.css';
 
-const OrderCard = () => {
-  const img = [
-    'https://code.s3.yandex.net/react/code/bun-02.png',
-    'https://code.s3.yandex.net/react/code/bun-02.png',
-    "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
-    "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
-    "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
-    "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
-    "https://code.s3.yandex.net/react/code/meat-04-large.png",
-    "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
-    "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
-    "https://code.s3.yandex.net/react/code/meat-04-mobile.png",
-  ];
+const OrderCard = ({ order, status }) => {
+  const { dataIngredients } = useSelector((state :any) => state.ingredients);
+  const ingredients = [] as any;
+  order.ingredients.forEach((el) => {
+    dataIngredients.forEach((element) => {
+      if (el === element._id) ingredients.push(element);
+    });
+  });
+  const price = ingredients.reduce((sum, cur) => {
+    return sum + cur.price;
+  }, 0);
+  const a = moment(order.updatedAt).format('dddd, MMMM DD YYYY, h:mm:ss');
+  console.log(a);
   
   return (
     <Link to="/profile/orders/12" className={styles.order__card}>
       <div className={styles.order__info}>
-        <p className="text text_type_main-default">#034535</p>
-        <p className="text text_type_main-default text_color_inactive">Сегодня, 16:20 i-GMT+3</p>
+        <p className="text text_type_main-default">#{order.number}</p>
+        <p className="text text_type_main-default text_color_inactive">{order.updatedAt}</p>
       </div>
-      <p className="text text_type_main-medium mt-6">Death Star Starship Main бургер</p>
+      <p className="text text_type_main-medium mt-6">{
+        order.name.length > 30 
+        ? `${order.name.slice(0, 30)}...`
+        : order.name
+      }</p>
+      {
+        status && (
+          order.status === "done" && <p className={"text text_type_main-default mt-2 "+styles.order__status_done}
+        >Выполнен</p>
+        ) 
+      }
       <div className={styles.card__info}>
         <div className={styles.card__image}>
-          {img.length < 7 && img.map((item,i) => (<span style={{zIndex:49-i}}><img src={item} /></span>))}
-          {img.length > 6 && img.map((item,i) => {
-            if(i < 5) return <span style={{zIndex:49-i}}><img src={item} /></span>
-            if(i === 6) return <span><p className="text text_type_digits-default">+{img.length-5}</p></span>
+          {ingredients.length < 7 && ingredients.map((item, i) => (
+            <span key={i} style={{zIndex:49-i}}><img src={item.image} /></span>
+          ))}
+          {ingredients.length > 6 && ingredients.map((item, i) => {
+            if(i < 5) return <span key={i} style={{zIndex:49-i}}><img src={item.image} /></span>
+            if(i === 6) return <span key={i}><p className="text text_type_digits-default">+{order.ingredients.length-5}</p></span>
           })}
         </div>
           <p className={"mt-1 text text_type_digits-default "+styles.card__price}>
-            500 <CurrencyIcon type="primary" />
+            {price} <CurrencyIcon type="primary" />
           </p>
       </div>
     </Link>
