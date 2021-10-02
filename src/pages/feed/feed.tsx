@@ -12,7 +12,7 @@ function Feed() {
   const { orders, total, totalToday } = useSelector((state :any) => state.wsOrders);
 
   useEffect(()=> {
-    dispatch(wsConnectionStart(WSS_URL));
+    dispatch(wsConnectionStart(`${WSS_URL}/all`));
     return () =>{
        dispatch(wsConnectionClosed());
     };
@@ -34,17 +34,25 @@ function Feed() {
             <div className={styles.table__ready}>
               <p className="text text_type_main-medium">Готовы:</p>
               <div>
-                <p className="text text_type_main-default">034533</p>
-                <p className="text text_type_main-default">034533</p>
-                <p className="text text_type_main-default">034533</p>
-                <p className="text text_type_main-default">034533</p>
+                {
+                  orders.length > 0 
+                  ? orders.map(el => (
+                    el.status === 'done' && <p className="text text_type_main-default mr-5" key={el._id} >{el.number}</p>
+                  ))
+                  : <>Error</>
+                }
               </div>
             </div>
               <div className={styles.table__preparing}>
               <p className="text text_type_main-medium">В работе:</p>
               <div>
-                <p className="text text_type_main-default">034533</p>
-                <p className="text text_type_main-default">034533</p>
+                {
+                  orders.length > 0 
+                  ? orders.map(el => (
+                    el.status !== 'done' && <p className="text text_type_main-default" key={el._id} >{el.number}</p>
+                  ))
+                  : <>Error</>
+                }
               </div>
             </div>
           </div>

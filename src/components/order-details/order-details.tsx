@@ -4,7 +4,7 @@ import styles from './order-details.module.css';
 import readyIcon from '../../images/ready-icon.gif';
 
 export default function OrderDetails() {
-  const {number,isError,isLoading} = useSelector((state:any) => state.constructors.order);
+  const { number, isError, isLoading } = useSelector((state:any) => state.constructors.order);
   if(isError){
     return <>Ошибка попробуйте еще раз ...</>
   }

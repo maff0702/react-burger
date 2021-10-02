@@ -16,16 +16,16 @@ export const socketMiddleware = () => {
         socket.onmessage = (event) => {
           const message = event.data;
           const data = JSON.parse(message);
-
           dispatch({ type: "wsOrders/wsGetMessage", payload: data });
         };
 
-        socket.onerror = () => {
+        socket.onerror = (event) => {
+          console.log(event.payload);
           dispatch({ type: "wsOrders/wsConnectionError" });
         };
 
-        socket.onclose = () => {
-          dispatch({ type: "wsOrders/wsConnectionClosed" });
+        socket.onclose = (event) => {
+          dispatch({ type: "wsOrders/wsConnectionClosedStatus", payload: event.code });
         };
       }
       

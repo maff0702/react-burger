@@ -10,6 +10,7 @@ import ModalOverlay from '../modal-overlay/modal-overlay';
 
 import { deleteCurrentIngredient } from '../../store/ingredientsSlice';
 import { closeModalIngredientDetails } from '../../store/ingredientsSlice';
+import { orderModalClose } from '../../store/wsOrdersSlice';
 
 const modalRoot = document.getElementById("modals");
 
@@ -19,15 +20,23 @@ const Modal = ({active, setActive, title, children}) => {
   const isLoadingOrderDetails = useSelector((state:any)=>state.constructors.order.isLoading);
   
   if(isLoadingOrderDetails) setActive=null;
+
   const closeModal = () => {
-    if(setActive)setActive(false);
+    if(setActive) setActive(false);
     dispatch(deleteCurrentIngredient());
     dispatch(closeModalIngredientDetails());
-    history.replace({ pathname: '/' });
+    dispatch(orderModalClose());
+    history.replace({
+      pathname: history?.location?.state
+      ? `${history?.location?.state?.background?.pathname}`
+      : '/'
+    });
   }
+  
   const closeModalEsc = ({key}: KeyboardEvent) => {
     if (key === "Escape" ) closeModal();
   }
+
   useEffect(() => {
     document.addEventListener('keydown', closeModalEsc);
     return () => document.removeEventListener('keydown', closeModalEsc);
@@ -37,7 +46,7 @@ const Modal = ({active, setActive, title, children}) => {
     (
     <ModalOverlay
       active={active}
-      setActive={setActive}
+      closeModal={closeModal}
     >
       <div className={active ? styles.modal__body+" "+styles.modal__body_active : styles.modal__body} onClick={e=>e.stopPropagation()}>
         <div className={"text text_type_main-large "+styles.header}>{title}</div>

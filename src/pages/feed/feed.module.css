@@ -56,6 +56,10 @@ h1{
 .table__ready div,
 .table__preparing div{
   margin-top: 24px;
+  height: 250px;
+  display: flex;
+  flex-direction: column;
+  flex-wrap: wrap;
 }
 .table__ready{
   color: rgba(0, 204, 204, 1);

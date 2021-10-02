@@ -15,6 +15,7 @@ import Feed from '../../pages/feed/feed';
 import Modal from '../modal/modal';
 import IngredientDetails from '../ingredient-details/ingredient-details';
 import Order from '../../pages/order-page/order';
+import OrderModal from '../order-modal/order-modal';
 import NotFound from '../../pages/not-found/not-fount';
 
 import { requestCheckAuth } from '../../store/authSlice'
@@ -24,7 +25,9 @@ function App() {
   const dispatch = useDispatch();
   const location = useLocation();
   const history = useHistory();
+
   const { isModalIngredientDetails } = useSelector((state:any) => state.ingredients);
+  const { isModalOrder, orderModalTitle } = useSelector((state:any) => state.wsOrders);
   const background = history.action === 'PUSH' && location.state && location.state.background;
   
   useEffect(()=>{
@@ -52,7 +55,14 @@ function App() {
           <Modal 
             active={isModalIngredientDetails}
             title="Детали ингредиента" >
-              <IngredientDetails/>
+              <IngredientDetails />
+          </Modal>} 
+        />}
+        {background && <Route path="/feed/:id" children={
+          <Modal 
+            active={isModalOrder}
+            title={`#${orderModalTitle}`} >
+              <OrderModal />
           </Modal>} 
         />}
       </div>

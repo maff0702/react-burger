@@ -22,10 +22,7 @@
   height: 64px;
   margin-top: 24px;
 }
-.order__status_done{
-  width: 100%;
-  color: #00CCCC;
-}
+
 .card__image{
   width: 436px;
   height: 100%;
@@ -54,6 +51,7 @@
 .card__image span img{
   width: 100%;
   z-index: 50;
+  transform: scale(1.4)
 }
 .card__image span p{
   width: 100%;
