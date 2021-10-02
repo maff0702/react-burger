@@ -50,9 +50,9 @@ const OrderCard = ({ order, status }) => {
             if(i === 6) return <span key={i}><p className="text text_type_digits-default">+{order.ingredients.length-5}</p></span>
           })}
         </div>
-          <p className={"mt-1 text text_type_digits-default "+styles.card__price}>
+          <div className={"mt-1 text text_type_digits-default "+styles.card__price}>
             {OrderPrice(ingredients)} <CurrencyIcon type="primary" />
-          </p>
+          </div>
       </div>
     </Link>
   )

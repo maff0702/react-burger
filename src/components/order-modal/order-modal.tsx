@@ -26,20 +26,20 @@ export default function OrderModal() {
   });
 
   return ( 
-    <main className={styles.content__body}>
+    <div className={styles.content__body}>
       <p className="text text_type_main-medium">{order.name}</p>
-      <p className="text text_type_main-default mt-3">{OrderStatus(order.status)}</p>
+      <div className="text text_type_main-default mt-3">{OrderStatus(order.status)}</div>
       <p className="text text_type_main-medium mt-15">Состав:</p>
       <div className={styles.ingredients__container}>
         { ingredients.map(el => (
-          <div className={styles.ingredient__info}>
+          <div key={el._id} className={styles.ingredient__info}>
             <span className={styles.ingredient__image}><img src={el.image}/></span>
             <p className={"text text_type_main-default "+styles.ingredient__title}>{el.name}</p>
             <p className={"mt-1 text text_type_digits-default "+styles.order__price}>
               <span>{ingredientsList[el._id]} x {el.price}</span> <CurrencyIcon type="primary" />
             </p>
           </div>
-        ))}
+        )) }
       </div>
       <div className={styles.order__info}>
         <p className="text text_type_main-default text_color_inactive">{dateFormat(order.updatedAt)}</p>
@@ -47,6 +47,6 @@ export default function OrderModal() {
             <span>{OrderPrice(ingredientsAll)}</span> <CurrencyIcon type="primary" />
         </p>
       </div>
-    </main>
+    </div>
   )
 }

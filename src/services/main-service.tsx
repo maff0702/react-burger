@@ -8,7 +8,7 @@ export default class MainService {
   static async getIngredients(): Promise<AxiosResponse<any>>{
     return axiosAPI.get('/ingredients')
   }
-  static async getOrders(): Promise<AxiosResponse<any>>{
-    return axiosAPI.get('/orders/all')
+  static async getOrders(query): Promise<AxiosResponse<any>>{
+    return axiosAPI.get(`/orders${query}`)
   }
 }

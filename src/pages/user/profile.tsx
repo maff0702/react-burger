@@ -6,9 +6,7 @@ import './styles.css';
 import ProfileSettings from './profile-settings';
 import Orders from '../profile-orders/profile-orders'
 import Order from '../order-page/order';
-import Modal from '../../components/modal/modal';
 import { ProtectedRoute } from '../../components/protected-route/protected-route';
-import OrderModal from '../../components/order-modal/order-modal';
 
 import { requestLogout } from '../../store/authSlice';
 
@@ -17,39 +15,41 @@ const Profile = () => {
   const location = useLocation();
   const history = useHistory();
 
-  const { isModalOrder, orderModalTitle } = useSelector((state:any) => state.wsOrders);
   const background = history.action === 'PUSH' && location.state && location.state.background;
+  let menuInfo = '';
 
   const handleLogout = () => {
     dispatch(requestLogout());
   }
   
+  switch (location.pathname) {
+    case '/profile': menuInfo = 'В этом разделе вы можете изменить свои персональные данные'; break;
+    case '/profile/orders': menuInfo = 'В этом разделе вы можете просмотреть свою историю заказов'; break;
+    default: menuInfo = '';
+  }
+  
   return (
     <ProtectedRoute path="/profile">
-      <div className={styles.profile__container}>
+      {location?.state?.background?.pathname === "/profile/orders" 
+        ? (<Switch>
+          <Route exact path="/profile/orders/:id" component={Order} />
+        </Switch>)
+        : (<div className={styles.profile__container}>
         <div className={styles.profile__menu}>
           <ul className={"text text_type_main-medium text_color_inactive "+styles.menu__list}>
             <li><NavLink exact to='/profile' className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}>Профиль</NavLink></li>
             <li><NavLink to='/profile/orders' className={isActive => styles.link + ' ' + (isActive ? styles.link_active : "")}>История заказов</NavLink></li>
             <li onClick={handleLogout}>Выход</li>
           </ul>
-          <p className="text text_type_main-default text_color_inactive mt-20 ">В этом разделе вы можете изменить свои персональные данные</p>
+          <p className="text text_type_main-default text_color_inactive mt-20 ">{menuInfo}</p>
         </div>
         <div className={styles.profile__content}>
           <Switch location={background || location}>
             <Route exact path="/profile" component={ProfileSettings} />
             <Route exact path="/profile/orders" component={Orders} />
-            <Route exact path="/profile/orders/:id" component={Order} />
           </Switch>
-          {background && <Route path="/profile/orders/:id" children={
-            <Modal 
-              active={isModalOrder}
-              title={`#${orderModalTitle}`} >
-                <OrderModal />
-            </Modal>} 
-          />}
         </div>
-      </div>
+      </div>)}
     </ProtectedRoute>
   )
 }

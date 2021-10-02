@@ -3,8 +3,8 @@ import axiosAPI from "../services/main-service";
 
 export const requestOrders = createAsyncThunk(
     'wsOrders/requestOrders',
-    async () => {
-      const response = await axiosAPI.getOrders();  
+    async (query :any) => {
+      const response = await axiosAPI.getOrders(query);
       return response.data;
     }
   )

@@ -56,15 +56,15 @@ function App() {
             active={isModalIngredientDetails}
             title="Детали ингредиента" >
               <IngredientDetails />
-          </Modal>} 
-        />}
-        {background && <Route path="/feed/:id" children={
+          </Modal>
+        }/>}
+        {background && <Route path={`${background.pathname}/:id`} children={
           <Modal 
             active={isModalOrder}
             title={`#${orderModalTitle}`} >
               <OrderModal />
-          </Modal>} 
-        />}
+          </Modal>
+        }/>}
       </div>
     </div>
   );
