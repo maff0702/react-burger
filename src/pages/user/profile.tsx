@@ -1,5 +1,5 @@
 import { Switch, Route, NavLink, useHistory, useLocation } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch } from 'react-redux';
 
 import styles from './profile.module.css';
 import './styles.css';
@@ -12,7 +12,7 @@ import { requestLogout } from '../../store/authSlice';
 
 const Profile = () => {
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location: any = useLocation();
   const history = useHistory();
 
   const background = history.action === 'PUSH' && location.state && location.state.background;

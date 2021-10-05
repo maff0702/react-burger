@@ -1,5 +1,4 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 
 import styles from './feed.module.css';
@@ -9,7 +8,7 @@ import { wsConnectionStart, wsConnectionClosed } from '../../store/wsOrdersSlice
 
 function Feed() {
   const dispatch = useDispatch();
-  const { orders, total, totalToday } = useSelector((state :any) => state.wsOrders);
+  const { orders, total, totalToday, isLoading } = useSelector((state :any) => state.wsOrders);
 
   useEffect(()=> {
     dispatch(wsConnectionStart(`${WSS_URL}/all`));
@@ -24,9 +23,9 @@ function Feed() {
       <div className={styles.order__container}>
         <div className={styles.order__tape}>
           {
-            orders.length > 0 
+            !isLoading && orders?.length > 0 
             ? orders.map(el => (<OrderCard key={el._id} order={el} status={false} />))
-            : <>Error</>
+            : <>Загрузка...</>
           }
         </div>
         <div className={styles.order__info}>
@@ -35,11 +34,11 @@ function Feed() {
               <p className="text text_type_main-medium">Готовы:</p>
               <div>
                 {
-                  orders.length > 0 
+                  !isLoading && orders?.length > 0 
                   ? orders.map(el => (
                     el.status === 'done' && <p className="text text_type_main-default mr-5" key={el._id} >{el.number}</p>
                   ))
-                  : <>Error</>
+                  : <>Загрузка...</>
                 }
               </div>
             </div>
@@ -47,11 +46,11 @@ function Feed() {
               <p className="text text_type_main-medium">В работе:</p>
               <div>
                 {
-                  orders.length > 0 
+                  !isLoading && orders?.length > 0 
                   ? orders.map(el => (
                     el.status !== 'done' && <p className="text text_type_main-default" key={el._id} >{el.number}</p>
                   ))
-                  : <>Error</>
+                  : <>Загрузка...</>
                 }
               </div>
             </div>

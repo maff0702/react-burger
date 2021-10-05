@@ -3,7 +3,7 @@ import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import ingredientsPropType from '../../types/types.js'
+import ingredientsPropType from '../../types/types'
 import PropTypes from 'prop-types';
 
 import { ingredientCurrentDecrement } from '../../store/ingredientsSlice';

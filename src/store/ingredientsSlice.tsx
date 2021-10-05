@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosAPI from "../services/main-service";
+import { TIngredient } from "../types/ingredient";
 
 export const requestIngredients = createAsyncThunk(
   'ingredients/requestIngredients',
@@ -8,16 +9,24 @@ export const requestIngredients = createAsyncThunk(
     return response.data;
   }
 )
+export type TIngredientsState = {
+  dataIngredients: TIngredient[];
+  isError: boolean;
+  isLoading: boolean;
+  currentIngredient: TIngredient | null;
+  isModalIngredientDetails: boolean;
+};
+const initialState:TIngredientsState = {
+  dataIngredients: [],
+  isError: false,
+  isLoading: false,
+  currentIngredient: null,
+  isModalIngredientDetails: false,
+}
 
 const ingredientsSlice = createSlice({
   name: 'ingredients',
-  initialState: {
-    dataIngredients: [] as any,
-    isError: false,
-    isLoading: false,
-    currentIngredient: {},
-    isModalIngredientDetails: false,
-  },
+  initialState,
   reducers: {
     ingredientCurrentIncrement: (state, action) => {
       if(action.payload.item.type === 'bun') state.dataIngredients = state.dataIngredients.map((obj) => obj.type === 'bun' ? {...obj, __v: 0} : obj );
@@ -31,7 +40,7 @@ const ingredientsSlice = createSlice({
       state.dataIngredients = state.dataIngredients.map((obj)=> ({...obj, __v: 0}) );
     },
     addCurrentIngredient: (state, action) => {state.currentIngredient = action.payload.ingredient},
-    deleteCurrentIngredient: (state) => {state.currentIngredient = ''},
+    deleteCurrentIngredient: (state) => {state.currentIngredient = null},
     openModalIngredientDetails: (state) => {state.isModalIngredientDetails = true},
     closeModalIngredientDetails: (state) => {state.isModalIngredientDetails = false},
   },

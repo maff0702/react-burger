@@ -10,7 +10,7 @@ import { requestRegister } from '../../store/authSlice';
 
 const Register = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history:any = useHistory();
   const [state, setState] = useState({
     name: '',
     email: '',

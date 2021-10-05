@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import axiosAPI from "../services/main-service";
+import { TIngredient } from "../types/ingredient";
 
 export const sendOrder = createAsyncThunk(
   'ingredients/sendOrder',
@@ -10,18 +11,31 @@ export const sendOrder = createAsyncThunk(
   }
 )
 
+type TOrder = {
+  number: number | null;
+    name: string;
+    isError: boolean;
+    isLoading: boolean;
+};
+export type TConstructorState = {
+  ingredients: TIngredient[] | any;
+  bun: TIngredient | null;
+  order: TOrder;
+};
+const initialState = {
+  ingredients: [] as any,
+  bun: null,
+  order: {
+    number: null,
+    name: '',
+    isError: false,
+    isLoading: false,
+  }
+}
+
 const constructorSlice = createSlice({
   name: 'constructor',
-  initialState: {
-    ingredients: [] as any,
-    bun: {} as any,
-    order: {
-      number: null,
-      name: '',
-      isError: false,
-      isLoading: false,
-    },
-  },
+  initialState,
   reducers: {
     addElementConstructor: (state, action) => {
       const item = action.payload.item;
@@ -47,7 +61,7 @@ const constructorSlice = createSlice({
     [sendOrder.fulfilled.toString()]: (state, action) => {
       state.order.number = action.payload.order.number;
       state.ingredients = [];
-      state.bun = {};
+      state.bun = null;
       state.order.name = action.payload.name;
       state.order.isLoading = false;
     },

@@ -10,7 +10,7 @@ import { requestLogin } from '../../store/authSlice';
 
 const Login = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history:any = useHistory();
   const [state, setState] = useState({
     email: '',
     password: ''

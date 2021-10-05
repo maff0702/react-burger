@@ -1,6 +1,5 @@
-import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
-import { useEffect } from 'react';
+import { useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './order-modal.module.css';
@@ -23,6 +22,7 @@ export default function OrderModal() {
       ingredientsList[item._id] = 1;
       return item;
     } else ingredientsList[item._id] = ingredientsList[item._id] + 1;
+    return false;
   });
 
   return ( 
@@ -33,7 +33,7 @@ export default function OrderModal() {
       <div className={styles.ingredients__container}>
         { ingredients.map(el => (
           <div key={el._id} className={styles.ingredient__info}>
-            <span className={styles.ingredient__image}><img src={el.image}/></span>
+            <span className={styles.ingredient__image}><img src={el.image} alt={el.name}/></span>
             <p className={"text text_type_main-default "+styles.ingredient__title}>{el.name}</p>
             <p className={"mt-1 text text_type_digits-default "+styles.order__price}>
               <span>{ingredientsList[el._id]} x {el.price}</span> <CurrencyIcon type="primary" />

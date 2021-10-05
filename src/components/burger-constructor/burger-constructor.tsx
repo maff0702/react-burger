@@ -16,9 +16,9 @@ export default function BurgerConstructor() {
   const dispatch = useDispatch();
   const history = useHistory();
   const [isModalActive, setModalActive] = useState(false);
-  const isObjectEmpty = object =>(JSON.stringify(object) !== '{}' ? true : false)
+  // const isObjectEmpty = object =>(JSON.stringify(object) !== '{}' ? true : false);
   const ingredients = useSelector((state: any) => state.constructors.ingredients);
-  const bun = useSelector((state: any) => state.constructors.bun);
+  const bun: any = useSelector((state: any) => state.constructors.bun);
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
@@ -34,8 +34,8 @@ export default function BurgerConstructor() {
   });
 
   const totalPrice = ingredients.reduce((sum, current) => {
-    return sum + current.price;
-  }, 0) + (bun.price ? bun.price*2 : 0);
+    return sum + current?.price;
+  }, 0) + (bun?.price ? bun?.price*2 : 0);
 
   const handleClick = () => {
     if(localStorage.getItem('accessToken')){
@@ -53,7 +53,7 @@ export default function BurgerConstructor() {
     <div className={styles.constructor__content}ref={dropTarget}>
       <section className={styles.constructor__ingredients} >
         <span className="pl-10 " style={{width:'552px'}}> 
-          {isObjectEmpty(bun) ? <ConstructorElement
+          {bun ? <ConstructorElement
             type="top"
             isLocked={true}
             text={`${bun.name} (верх)`}
@@ -66,7 +66,7 @@ export default function BurgerConstructor() {
           <span className="ml-10">Выберите ингредиенты из списка и перетащите сюда</span>
         }
         <span className="pl-10" style={{width:'552px'}}>
-          {isObjectEmpty(bun) && <ConstructorElement
+          {bun && <ConstructorElement
             type="bottom"
             isLocked={true}
             text={`${bun.name} (низ)`}
@@ -77,7 +77,7 @@ export default function BurgerConstructor() {
       </section>  
       <div className={"mt-10 " + styles.constructor__info}>
         <span className="text text_type_digits-medium mr-10"><span>{totalPrice}</span><CurrencyIcon type="primary" /></span>
-        {isObjectEmpty(bun) ? <Button 
+        {bun ? <Button 
           type="primary"
           size="medium"
           onClick={handleClick}

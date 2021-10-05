@@ -51,16 +51,31 @@ export const requestResetPassword = createAsyncThunk(
   }
 )
 
+type user = {
+  email: string;
+  name: string;
+}
+
+export type TAuthState = {
+  user: user | null;
+  isAuth: boolean;
+  isError: boolean;
+  isLoading: boolean;
+  forgotStatus: boolean;
+  resetStatus: boolean;
+};
+const initialState: TAuthState = {
+  user: null,
+  isAuth: false,
+  isError: false,
+  isLoading: false,
+  forgotStatus: false,
+  resetStatus: false,
+}
+
 const authSlice = createSlice({
   name: 'auth',
-  initialState: {
-    user: {} as any,
-    isAuth: false,
-    isError: false,
-    isLoading: false,
-    forgotStatus: false,
-    resetStatus: false
-  },
+  initialState,
   reducers: {},
   extraReducers: {
     [requestRegister.fulfilled.toString()]: (state, action) => {
@@ -82,7 +97,7 @@ const authSlice = createSlice({
     [requestLogin.rejected.toString()]: (state) => {state.isError = true},
 
     [requestLogout.fulfilled.toString()]: (state) => {
-      state.user = {};
+      state.user = null;
       state.isAuth = false;
       localStorage.removeItem('refreshToken');
       localStorage.removeItem('accessToken');

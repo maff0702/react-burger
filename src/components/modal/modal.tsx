@@ -16,7 +16,7 @@ const modalRoot = document.getElementById("modals");
 
 const Modal = ({active, setActive, title, children}) => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history: any = useHistory();
   const isLoadingOrderDetails = useSelector((state:any)=>state.constructors.order.isLoading);
   
   if(isLoadingOrderDetails) setActive=null;

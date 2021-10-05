@@ -1,6 +1,7 @@
+
 export const socketMiddleware = () => {
   return store => {
-    let socket = null;
+    let socket: any = null;
 
     return next => action => {
       const { dispatch } = store;
@@ -16,11 +17,11 @@ export const socketMiddleware = () => {
         socket.onmessage = (event) => {
           const message = event.data;
           const data = JSON.parse(message);
+          console.log(data);
           dispatch({ type: "wsOrders/wsGetMessage", payload: data });
         };
 
-        socket.onerror = (event) => {
-          console.log(event.payload);
+        socket.onerror = () => {
           dispatch({ type: "wsOrders/wsConnectionError" });
         };
 

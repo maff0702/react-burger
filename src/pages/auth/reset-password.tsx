@@ -10,7 +10,7 @@ import { requestResetPassword } from '../../store/authSlice';
 
 const ResetPassword = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const history: any = useHistory();
   const [state, setState] = useState({
     password: '',
     token: ''

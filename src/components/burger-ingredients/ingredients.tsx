@@ -2,7 +2,7 @@ import PropTypes from 'prop-types';
 
 import styles from './burger-ingredient.module.css';
 import IngredientCard from "./ingredient-card";
-import ingredientsPropType from '../../types/types.js'
+import ingredientsPropType from '../../types/types'
 
 const Ingredients = ({data,type,title}) => (
   <section>

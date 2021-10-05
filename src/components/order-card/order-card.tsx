@@ -1,3 +1,4 @@
+import React, { FC } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link, useHistory } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -9,7 +10,14 @@ import SelectIngredients from '../../utils/select-ingredients';
 import OrderStatus from '../../utils/order-status';
 import { orderModalOpen } from '../../store/wsOrdersSlice';
 
-const OrderCard = ({ order, status }) => {
+import { IOrderCard } from '../../types/order';
+
+interface IOrderCardProps {
+  readonly order: IOrderCard;
+  status?: boolean;
+}
+
+const OrderCard: FC<IOrderCardProps> = ({ order, status }:IOrderCardProps) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = history.location;
@@ -43,11 +51,12 @@ const OrderCard = ({ order, status }) => {
       <div className={styles.card__info}>
         <div className={styles.card__image}>
           {ingredients.length < 7 && ingredients.map((item, i) => (
-            <span key={i} style={{zIndex:49-i}}><img src={item.image} /></span>
+            <span key={i} style={{zIndex:49-i}}><img src={item.image} alt={item.name} /></span>
           ))}
           {ingredients.length > 6 && ingredients.map((item, i) => {
-            if(i < 5) return <span key={i} style={{zIndex:49-i}}><img src={item.image} /></span>
-            if(i === 6) return <span key={i}><p className="text text_type_digits-default">+{order.ingredients.length-5}</p></span>
+            if(i < 5) return <span key={i} style={{zIndex:49-i}}><img src={item.image} alt={item.name} /></span>
+            if(i === 6) return <span key={i} ><p className="text text_type_digits-default">+{order.ingredients.length-5}</p></span>
+            return null;
           })}
         </div>
           <div className={"mt-1 text text_type_digits-default "+styles.card__price}>

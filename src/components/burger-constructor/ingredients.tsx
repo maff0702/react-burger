@@ -1,7 +1,7 @@
 import { useSelector } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import ingredientsPropType from '../../types/types.js'
+import ingredientsPropType from '../../types/types'
 import styles from './burger-constructor.module.css';
 import IngedientElement from './ingredient-element';
 

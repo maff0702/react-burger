@@ -14,7 +14,7 @@ const ProfileSettings = () => {
     name: '',
     email: '',
     password: ''
-  })
+  });
 
   useEffect(()=>{
     if(isAuth){
@@ -38,7 +38,8 @@ const ProfileSettings = () => {
   const onSubmit = (e) => {
     e.preventDefault();
     dispatch(requestUpdateUser({state}))
-  }
+  };
+
   const handleClickCancel = (e) => {
     e.preventDefault();
     setState({
@@ -46,7 +47,7 @@ const ProfileSettings = () => {
       name: user.name,
       email: user.email
     })
-  }
+  };
 
   return (
     <div className={styles.profile__form}>

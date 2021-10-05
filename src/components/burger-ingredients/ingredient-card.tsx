@@ -5,7 +5,7 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 
 import { addCurrentIngredient, openModalIngredientDetails } from '../../store/ingredientsSlice';
 import styles from './burger-ingredient.module.css';
-import ingredientsPropType from '../../types/types.js'
+import ingredientsPropType from '../../types/types'
 
 const IngredientCard = ({ingredient}) => {
   const location = useLocation();

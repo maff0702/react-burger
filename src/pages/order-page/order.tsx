@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -23,16 +23,19 @@ function Order() {
   
   useEffect(() => {
     dispatch(requestOrders(queryRequest));
-  }, [dispatch]);
+  }, [dispatch, queryRequest]);
+
   const id = history.location.pathname.split('/').pop();
   const order = orders.filter(el => el._id === id)[0];
   const ingredientsAll = order ? SelectIngredients(order, dataIngredients) : null;
   const ingredientsList = {};
+  
   const ingredients = ingredientsAll && ingredientsAll.filter((item, index) => {
     if (ingredientsAll.indexOf(item) === index) {
       ingredientsList[item._id] = 1;
       return item;
     } else ingredientsList[item._id] = ingredientsList[item._id] + 1;
+    return false;
   });
   
   return (
@@ -46,7 +49,7 @@ function Order() {
         <div className={styles.ingredients__container}>
           { ingredients.map(el => (
             <div key={el._id} className={styles.ingredient__info}>
-              <span className={styles.ingredient__image}><img src={el.image}/></span>
+              <span className={styles.ingredient__image}><img src={el.image} alt={el.name} /></span>
               <p className={"text text_type_main-default "+styles.ingredient__title}>{el.name}</p>
               <p className={"mt-1 text text_type_digits-default "+styles.order__price}>
                 <span>{ingredientsList[el._id]} x {el.price}</span> <CurrencyIcon type="primary" />

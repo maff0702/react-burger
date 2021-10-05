@@ -1,4 +1,14 @@
 import PropTypes from 'prop-types';
+import { IOrderCard } from './order';
+import { TOrdersState } from '../store/wsOrdersSlice';
+import { TIngredient } from './ingredient';
+import { TAuthState } from '../store/authSlice';
+import { TConstructorState } from '../store/constructorSlice';
+
+export type TAllState = TOrdersState
+  | TIngredient
+  | TAuthState
+  | TConstructorState;
 
 const ingredientsPropType = PropTypes.shape({
   _id: PropTypes.string.isRequired,

@@ -23,7 +23,7 @@ import { requestIngredients } from '../../store/ingredientsSlice';
 
 function App() { 
   const dispatch = useDispatch();
-  const location = useLocation();
+  const location: any = useLocation();
   const history = useHistory();
 
   const { isModalIngredientDetails } = useSelector((state:any) => state.ingredients);
