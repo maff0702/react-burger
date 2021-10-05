@@ -1,5 +1,5 @@
-import { useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useEffect, FC } from 'react';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 
 import styles from './profile-orders.module.css';
 import { WSS_URL } from '../../utils/constants';
@@ -7,9 +7,18 @@ import OrderCard from '../../components/order-card/order-card';
 import { wsConnectionStart, wsConnectionClosed } from '../../store/wsOrdersSlice';
 import { requestCheckAuth } from '../../store/authSlice';
 
-const Orders = () => {
+import { IOrderCard } from '../../types/order';
+
+interface IOrdersInfo {
+  orders: IOrderCard[] | null;
+  isLoading: boolean;
+  statusCode: null | number;
+  message: string;
+}
+
+const Orders: FC = () => {
   const dispatch = useDispatch();
-  const { orders, isLoading, statusCode, message } = useSelector((state :any) => state.wsOrders);
+  const { orders, isLoading, statusCode, message }: IOrdersInfo = useSelector((state) => state.wsOrders);
   const token = localStorage.getItem('accessToken');
 
   useEffect(()=> {
@@ -24,13 +33,13 @@ const Orders = () => {
     return () =>{
       dispatch(wsConnectionClosed());
     };
-  },[dispatch, message, token]);
+  },[dispatch, token]);
   
   return (
    <div className={styles.order__tape}>
     {/* {isLoading && <>Загрузка...</>} */}
     {
-      !isLoading && orders?.length > 0 
+      !isLoading && orders
       ? [...orders].reverse().map(el => (<OrderCard key={el._id} order={el} status />))
       : <>Загрузка...</>
     }

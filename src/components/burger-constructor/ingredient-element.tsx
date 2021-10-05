@@ -1,13 +1,11 @@
-import { useRef} from 'react';
+import { useRef, FC} from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import ingredientsPropType from '../../types/types'
-import PropTypes from 'prop-types';
-
 import { ingredientCurrentDecrement } from '../../store/ingredientsSlice';
 import { deleteElementConstructor, moveIngredientConstructor } from '../../store/constructorSlice';
+import { TIngredientItem } from './ingredients';
 
 interface DragItem {
   index: number
@@ -15,7 +13,12 @@ interface DragItem {
   type: string
 }
 
-const IngedientElement = ({data, index}) => {
+type TIngredientProps = {
+  data: TIngredientItem;
+  index: number;
+};
+
+const IngedientElement: FC<TIngredientProps> = ({data, index}: TIngredientProps) => {
   const dispatch = useDispatch();
   const id = data._id;
   const ref = useRef(null) as any;
@@ -64,10 +67,5 @@ const IngedientElement = ({data, index}) => {
     </span>
   )
 }
-
-IngedientElement.propTypes = {
-  data: ingredientsPropType.isRequired,
-  index: PropTypes.number.isRequired,
-};
 
 export default IngedientElement;

@@ -1,3 +1,13 @@
+// import { Middleware } from 'redux';
+// import { RootState } from '../index';
+import {
+  wsConnectionStart,
+  wsConnectionClosed,
+  wsConnectionClosedStatus,
+  wsConnectionError,
+  wsConnectionSuccess,
+  wsGetMessage,
+} from "../wsOrdersSlice";
 
 export const socketMiddleware = () => {
   return store => {
@@ -6,31 +16,32 @@ export const socketMiddleware = () => {
     return next => action => {
       const { dispatch } = store;
       const { type, payload } = action;
-      if (type === "wsOrders/wsConnectionStart") {
+
+      if (type === wsConnectionStart.toString()) {
         socket = new WebSocket(payload);
       }
+
       if (socket) {
         socket.onopen = () => {
-          dispatch({ type: "wsOrders/wsConnectionSuccess" });
+          dispatch(wsConnectionSuccess());
         };
 
         socket.onmessage = (event) => {
           const message = event.data;
           const data = JSON.parse(message);
-          console.log(data);
-          dispatch({ type: "wsOrders/wsGetMessage", payload: data });
+          dispatch(wsGetMessage(data));
         };
 
         socket.onerror = () => {
-          dispatch({ type: "wsOrders/wsConnectionError" });
+          dispatch(wsConnectionError());
         };
 
         socket.onclose = (event) => {
-          dispatch({ type: "wsOrders/wsConnectionClosedStatus", payload: event.code });
+          dispatch(wsConnectionClosedStatus(event.code));
         };
       }
       
-      if (type === "wsOrders/wsConnectionClosed") {
+      if (type === wsConnectionClosed.toString()) {
         socket.close("1000");
       }
 

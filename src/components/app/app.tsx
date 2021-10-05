@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 
@@ -19,15 +19,16 @@ import OrderModal from '../order-modal/order-modal';
 import NotFound from '../../pages/not-found/not-fount';
 
 import { requestCheckAuth } from '../../store/authSlice'
-import { requestIngredients } from '../../store/ingredientsSlice';
+import { requestIngredients, closeModalIngredientDetails } from '../../store/ingredientsSlice';
+import { orderModalClose } from '../../store/wsOrdersSlice';
 
 function App() { 
   const dispatch = useDispatch();
   const location: any = useLocation();
   const history = useHistory();
 
-  const { isModalIngredientDetails } = useSelector((state:any) => state.ingredients);
-  const { isModalOrder, orderModalTitle } = useSelector((state:any) => state.wsOrders);
+  const { isModalIngredientDetails } = useSelector((state) => state.ingredients);
+  const { isModalOrder, orderModalTitle } = useSelector((state) => state.wsOrders);
   const background = history.action === 'PUSH' && location.state && location.state.background;
   
   useEffect(()=>{
@@ -54,6 +55,7 @@ function App() {
         {background && <Route path="/ingredients/:id" children={
           <Modal 
             active={isModalIngredientDetails}
+            setActive={closeModalIngredientDetails}
             title="Детали ингредиента" >
               <IngredientDetails />
           </Modal>
@@ -61,6 +63,7 @@ function App() {
         {background && <Route path={`${background.pathname}/:id`} children={
           <Modal 
             active={isModalOrder}
+            setActive={orderModalClose}
             title={`#${orderModalTitle}`} >
               <OrderModal />
           </Modal>

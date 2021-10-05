@@ -9,7 +9,7 @@ import { requestUpdateUser } from '../../store/authSlice';
 
 const ProfileSettings = () => {
   const dispatch = useDispatch();
-  const { isAuth, user } = useSelector((state:any)=>state.auth);
+  const { isAuth, user } = useSelector((state:any) => state.auth);
   const [state, setState] = useState({
     name: '',
     email: '',

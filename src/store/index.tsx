@@ -5,7 +5,7 @@ import authReducer from './authSlice';
 import wsOrdersReducer from './wsOrdersSlice';
 import { socketMiddleware } from './middleware/wsOrdersMiddleware';
 
-export default configureStore({
+const store = configureStore({
   reducer : {
     ingredients: ingredientReducer,
     constructors: constructorReducer,
@@ -15,3 +15,8 @@ export default configureStore({
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(socketMiddleware()),
 })
+
+export default store;
+
+export type RootState = ReturnType<typeof store.getState>
+export type AppDispatch = typeof store.dispatch

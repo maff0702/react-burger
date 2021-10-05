@@ -1,31 +1,36 @@
+import { FC, ReactNode } from 'react';
 import { Route, Redirect  } from 'react-router-dom';
-import { useSelector } from 'react-redux';
-import PropTypes from 'prop-types';
+import { useSelector } from '../../hooks/hooks';
 
-export function ProtectedRoute({ children, ...rest }) {
-    let { isAuth } = useSelector((state :any) => state.auth);
-    isAuth = localStorage.getItem('accessToken');
-    
-    return (
-    <Route
-      {...rest}
-      render={({ location }) =>
-        isAuth ? (
-          children
-        ) : (
-              <Redirect
-                to={{
-                  pathname: '/login',
-                  state: { from: location }
-                }}
-              />
-            )
-      }
-    />
-  );
+interface IRest {
+  readonly children: ReactNode;
+  readonly path: string;
+}
+interface IProtectedRouteProps {
+  readonly children: ReactNode;
+  readonly rest: IRest;
 }
 
-ProtectedRoute.propTypes = {
-  children: PropTypes.element.isRequired,
-  rest: PropTypes.object
-};
+export const ProtectedRoute: FC<any> = ({ children, ...rest }: IProtectedRouteProps) =>  {
+    const { isAuth, isLoading, isError } = useSelector((state) => state.auth);
+
+    return (
+      <>{
+        !isLoading && !isError && <Route
+          {...rest}
+          render={({ location }) =>
+            isAuth ? (
+              children
+            ) : (
+                  <Redirect
+                    to={{
+                      pathname: '/login',
+                      state: { from: location }
+                    }}
+                  />
+                )
+          }
+        />
+      }</>
+  );
+}

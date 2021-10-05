@@ -1,4 +1,4 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axiosAPI from "../services/main-service";
 import { TIngredient } from "../types/ingredient";
 
@@ -33,16 +33,20 @@ const ingredientsSlice = createSlice({
       state.dataIngredients = state.dataIngredients.map((obj) => obj._id === action.payload.item._id ? {...obj, __v: obj.__v + 1} : obj );
       state.dataIngredients = state.dataIngredients.map((obj) => (obj.type === 'bun' && obj._id === action.payload.item._id) ? {...obj, __v: 2} : obj);
     },
-    ingredientCurrentDecrement: (state, action) => {
+    ingredientCurrentDecrement: (state, action: PayloadAction<any>) => {
       state.dataIngredients = state.dataIngredients.map((obj)=> obj._id === action.payload.id ? {...obj, __v: obj.__v - 1} : obj );
     },
     deletedAllCurrentIngredient: (state) => {
       state.dataIngredients = state.dataIngredients.map((obj)=> ({...obj, __v: 0}) );
     },
-    addCurrentIngredient: (state, action) => {state.currentIngredient = action.payload.ingredient},
-    deleteCurrentIngredient: (state) => {state.currentIngredient = null},
-    openModalIngredientDetails: (state) => {state.isModalIngredientDetails = true},
-    closeModalIngredientDetails: (state) => {state.isModalIngredientDetails = false},
+    openModalIngredientDetails: (state, action) => {
+      state.currentIngredient = action.payload.ingredient;
+      state.isModalIngredientDetails = true;
+    },
+    closeModalIngredientDetails: (state) => {
+      state.currentIngredient = null;
+      state.isModalIngredientDetails = false;
+    },
   },
   extraReducers: {
     [requestIngredients.pending.toString()]: (state) => { state.isLoading = true},
@@ -60,8 +64,6 @@ const ingredientsSlice = createSlice({
 export const {
   ingredientCurrentIncrement,
   ingredientCurrentDecrement,
-  addCurrentIngredient,
-  deleteCurrentIngredient,
   openModalIngredientDetails,
   closeModalIngredientDetails,
   deletedAllCurrentIngredient

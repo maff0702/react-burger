@@ -1,8 +1,14 @@
-import PropTypes from 'prop-types';
+import { FC, ReactNode } from 'react';
 
 import styles from './modal-overlay.module.css';
 
-const ModalOverlay = (props) => (
+interface IModalOverlayProps {
+  readonly active: boolean;
+  readonly closeModal: () => void;
+  readonly children: ReactNode;
+}
+
+const ModalOverlay: FC<IModalOverlayProps> = (props: IModalOverlayProps) => (
   <div 
     className={props.active ? styles.modal+" "+styles.modal_active : styles.active}
     onClick={props.closeModal}
@@ -12,9 +18,3 @@ const ModalOverlay = (props) => (
 );
 
 export default ModalOverlay;
-
-ModalOverlay.propTypes = {
-  active: PropTypes.bool.isRequired,
-  closeModal: PropTypes.func,
-  children: PropTypes.element.isRequired
-};

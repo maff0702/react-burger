@@ -1,31 +1,31 @@
-import { useEffect } from 'react';
+import { useEffect, FC, ReactNode } from 'react';
 import { useHistory } from 'react-router-dom';
 import ReactDOM from 'react-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
-import PropTypes from 'prop-types';
 
 import styles from './modal.module.css';
 import ModalOverlay from '../modal-overlay/modal-overlay';
 
-import { deleteCurrentIngredient } from '../../store/ingredientsSlice';
-import { closeModalIngredientDetails } from '../../store/ingredientsSlice';
-import { orderModalClose } from '../../store/wsOrdersSlice';
-
 const modalRoot = document.getElementById("modals");
 
-const Modal = ({active, setActive, title, children}) => {
+interface IModalProps {
+  readonly active: boolean;
+  setActive?: any;
+  title?: string;
+  readonly children: ReactNode;
+}
+
+const Modal: FC<IModalProps> = ({active, setActive, title, children}: IModalProps) => {
   const dispatch = useDispatch();
   const history: any = useHistory();
-  const isLoadingOrderDetails = useSelector((state:any)=>state.constructors.order.isLoading);
+  const isLoadingOrderDetails = useSelector((state)=>state.constructors.order.isLoading);
   
-  if(isLoadingOrderDetails) setActive=null;
-
+  if(isLoadingOrderDetails) setActive = null;
+  
   const closeModal = () => {
-    if(setActive) setActive(false);
-    dispatch(deleteCurrentIngredient());
-    dispatch(closeModalIngredientDetails());
-    dispatch(orderModalClose());
+    if(setActive) dispatch(setActive());
+
     history.replace({
       pathname: history?.location?.state
       ? `${history?.location?.state?.background?.pathname}`
@@ -61,10 +61,3 @@ const Modal = ({active, setActive, title, children}) => {
 }
 
 export default Modal;
-
-Modal.propTypes = {
-  active: PropTypes.bool.isRequired,
-  setActive: PropTypes.func,
-  title: PropTypes.string.isRequired,
-  children: PropTypes.element.isRequired
-};

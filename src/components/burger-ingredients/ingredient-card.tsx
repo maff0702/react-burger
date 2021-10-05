@@ -1,9 +1,9 @@
 import { useDrag } from "react-dnd";
-import { useDispatch } from 'react-redux';
+import { useDispatch } from "../../hooks/hooks";
 import { Link, useLocation } from 'react-router-dom';
 import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-components';
 
-import { addCurrentIngredient, openModalIngredientDetails } from '../../store/ingredientsSlice';
+import { openModalIngredientDetails } from '../../store/ingredientsSlice';
 import styles from './burger-ingredient.module.css';
 import ingredientsPropType from '../../types/types'
 
@@ -15,8 +15,7 @@ const IngredientCard = ({ingredient}) => {
     item: ingredient
 });
   const clickIngredient = () =>{
-    dispatch(addCurrentIngredient({ingredient}));
-    dispatch(openModalIngredientDetails());
+    dispatch(openModalIngredientDetails({ingredient}));
   }
   return(
     <div className={styles.cart__ingredient}

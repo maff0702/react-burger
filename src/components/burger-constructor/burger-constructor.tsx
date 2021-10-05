@@ -1,5 +1,5 @@
-import { useState } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { FC } from 'react';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { useHistory } from 'react-router-dom';
 import { useDrop } from "react-dnd";
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,15 +10,20 @@ import OrderDetails from '../order-details/order-details';
 import Ingredients from './ingredients';
 
 import { ingredientCurrentIncrement, deletedAllCurrentIngredient } from '../../store/ingredientsSlice';
-import { sendOrder, addElementConstructor, addBunConstructor } from '../../store/constructorSlice';
+import {
+  sendOrder,
+  addElementConstructor,
+  addBunConstructor,
+  openModalOrderDetails,
+  closeModalOrderDetails,
+} from '../../store/constructorSlice';
 
-export default function BurgerConstructor() {
+const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const history = useHistory();
-  const [isModalActive, setModalActive] = useState(false);
   // const isObjectEmpty = object =>(JSON.stringify(object) !== '{}' ? true : false);
-  const ingredients = useSelector((state: any) => state.constructors.ingredients);
-  const bun: any = useSelector((state: any) => state.constructors.bun);
+  const { ingredients, isModalOrderDetails} = useSelector((state) => state.constructors);
+  const bun: any = useSelector((state) => state.constructors.bun);
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
@@ -35,11 +40,11 @@ export default function BurgerConstructor() {
 
   const totalPrice = ingredients.reduce((sum, current) => {
     return sum + current?.price;
-  }, 0) + (bun?.price ? bun?.price*2 : 0);
+  }, 0) + (bun?.price ? bun?.price * 2 : 0);
 
   const handleClick = () => {
     if(localStorage.getItem('accessToken')){
-      setModalActive(true);
+      dispatch(openModalOrderDetails());
       const idIngredients = [] as any;
       ingredients.forEach(element => idIngredients.push(element._id));
       dispatch(sendOrder([bun._id, ...idIngredients, bun._id]));
@@ -86,8 +91,8 @@ export default function BurgerConstructor() {
         </Button> : ''}
       </div>
       <Modal
-        active={isModalActive}
-        setActive={setModalActive}
+        active={isModalOrderDetails}
+        setActive={closeModalOrderDetails}
         title=""
       >
         <OrderDetails/>
@@ -95,3 +100,5 @@ export default function BurgerConstructor() {
     </div>
   );
 }
+
+export default BurgerConstructor;
