@@ -22,7 +22,6 @@ const BurgerIngredients = () => {
     if(sauceList <= scrollSection) setCurrent('two');
     if(mainList <= scrollSection) setCurrent('three');
   };
-  
 
   return (
     <section className={styles.burger__content +' pt-10 pb-10'}>
