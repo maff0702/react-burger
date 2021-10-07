@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 import { useHistory } from 'react-router-dom';
+import { History } from 'history';
 import { useDrop } from "react-dnd";
 import { ConstructorElement, CurrencyIcon, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -8,6 +9,7 @@ import styles from './burger-constructor.module.css';
 import Modal from '../modal/modal';
 import OrderDetails from '../order-details/order-details';
 import Ingredients from './ingredients';
+import { TIngredient } from '../../types/ingredient';
 
 import { ingredientCurrentIncrement, deletedAllCurrentIngredient } from '../../store/ingredientsSlice';
 import {
@@ -20,14 +22,13 @@ import {
 
 const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  // const isObjectEmpty = object =>(JSON.stringify(object) !== '{}' ? true : false);
+  const history: History = useHistory();
   const { ingredients, isModalOrderDetails} = useSelector((state) => state.constructors);
   const bun: any = useSelector((state) => state.constructors.bun);
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
-    drop(item: any) {
+    drop(item: TIngredient) {
       if(item.type === 'bun'){
         dispatch(addBunConstructor({item}))
         dispatch(ingredientCurrentIncrement({item}))
@@ -38,15 +39,15 @@ const BurgerConstructor: FC = () => {
     }
   });
 
-  const totalPrice = ingredients.reduce((sum, current) => {
+  const totalPrice = ingredients.reduce((sum: number, current: TIngredient) => {
     return sum + current?.price;
   }, 0) + (bun?.price ? bun?.price * 2 : 0);
 
-  const handleClick = () => {
+  const handleClick = (): void => {
     if(localStorage.getItem('accessToken')){
       dispatch(openModalOrderDetails());
-      const idIngredients = [] as any;
-      ingredients.forEach(element => idIngredients.push(element._id));
+      const idIngredients: string[] = [];
+      ingredients.forEach((element: TIngredient) => idIngredients.push(element._id));
       dispatch(sendOrder([bun._id, ...idIngredients, bun._id]));
       dispatch(deletedAllCurrentIngredient());
     } else {   

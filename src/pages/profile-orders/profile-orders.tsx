@@ -40,7 +40,7 @@ const Orders: FC = () => {
     {/* {isLoading && <>Загрузка...</>} */}
     {
       !isLoading && orders
-      ? [...orders].reverse().map(el => (<OrderCard key={el._id} order={el} status />))
+      ? [...orders].reverse().map((el: IOrderCard) => (<OrderCard key={el._id} order={el} status />))
       : <>Загрузка...</>
     }
   </div>

@@ -1,14 +1,16 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { useEffect } from 'react';
 
 import styles from './feed.module.css';
 import { WSS_URL } from '../../utils/constants';
 import OrderCard from '../../components/order-card/order-card';
 import { wsConnectionStart, wsConnectionClosed } from '../../store/wsOrdersSlice';
+import { IOrderCard } from '../../types/order';
 
 function Feed() {
   const dispatch = useDispatch();
-  const { orders, total, totalToday, isLoading } = useSelector((state :any) => state.wsOrders);
+  const orders: IOrderCard[] | null = useSelector((state) => state.wsOrders.orders);
+  const { total, totalToday, isLoading } = useSelector((state) => state.wsOrders);
 
   useEffect(()=> {
     dispatch(wsConnectionStart(`${WSS_URL}/all`));
@@ -23,8 +25,8 @@ function Feed() {
       <div className={styles.order__container}>
         <div className={styles.order__tape}>
           {
-            !isLoading && orders?.length > 0 
-            ? orders.map(el => (<OrderCard key={el._id} order={el} status={false} />))
+            !isLoading && orders
+            ? orders.map((el: IOrderCard) => (<OrderCard key={el._id} order={el} status={false} />))
             : <>Загрузка...</>
           }
         </div>
@@ -34,8 +36,8 @@ function Feed() {
               <p className="text text_type_main-medium">Готовы:</p>
               <div>
                 {
-                  !isLoading && orders?.length > 0 
-                  ? orders.map(el => (
+                  !isLoading && orders
+                  ? orders.map((el: IOrderCard) => (
                     el.status === 'done' && <p className="text text_type_main-default mr-5" key={el._id} >{el.number}</p>
                   ))
                   : <>Загрузка...</>
@@ -46,8 +48,8 @@ function Feed() {
               <p className="text text_type_main-medium">В работе:</p>
               <div>
                 {
-                  !isLoading && orders?.length > 0 
-                  ? orders.map(el => (
+                  !isLoading && orders
+                  ? orders.map((el: IOrderCard) => (
                     el.status !== 'done' && <p className="text text_type_main-default" key={el._id} >{el.number}</p>
                   ))
                   : <>Загрузка...</>

@@ -8,12 +8,12 @@ interface IModalOverlayProps {
   readonly children: ReactNode;
 }
 
-const ModalOverlay: FC<IModalOverlayProps> = (props: IModalOverlayProps) => (
+const ModalOverlay: FC<IModalOverlayProps> = ({active, closeModal, children}) => (
   <div 
-    className={props.active ? styles.modal+" "+styles.modal_active : styles.active}
-    onClick={props.closeModal}
+    className={active ? styles.modal+" "+styles.modal_active : styles.active}
+    onClick={closeModal}
   >
-    {props.children} 
+    {children} 
   </div>
 );
 

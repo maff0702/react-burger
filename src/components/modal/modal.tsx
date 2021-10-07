@@ -1,5 +1,6 @@
 import { useEffect, FC, ReactNode } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useLocation } from 'react-router-dom';
+import { History } from 'history';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from '../../hooks/hooks';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -16,9 +17,10 @@ interface IModalProps {
   readonly children: ReactNode;
 }
 
-const Modal: FC<IModalProps> = ({active, setActive, title, children}: IModalProps) => {
+const Modal: FC<IModalProps> = ({active, setActive, title, children}) => {
   const dispatch = useDispatch();
-  const history: any = useHistory();
+  const history: History = useHistory();
+  const location = useLocation<{background:{pathname: string}}>();
   const isLoadingOrderDetails = useSelector((state)=>state.constructors.order.isLoading);
   
   if(isLoadingOrderDetails) setActive = null;
@@ -27,8 +29,8 @@ const Modal: FC<IModalProps> = ({active, setActive, title, children}: IModalProp
     if(setActive) dispatch(setActive());
 
     history.replace({
-      pathname: history?.location?.state
-      ? `${history?.location?.state?.background?.pathname}`
+      pathname: location?.state
+      ? `${location?.state?.background?.pathname}`
       : '/'
     });
   }

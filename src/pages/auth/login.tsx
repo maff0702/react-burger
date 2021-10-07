@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link, useHistory, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, MouseEvent, ChangeEvent, FC } from 'react';
+import { Link, useLocation, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './auth.module.css';
@@ -8,17 +8,21 @@ import './styles.css';
 
 import { requestLogin } from '../../store/authSlice';
 
-const Login = () => {
+interface IFormState {
+  email: string;
+  password: string;
+}
+
+const Login: FC = () => {
   const dispatch = useDispatch();
-  const history:any = useHistory();
-  const [state, setState] = useState({
+  const location: any = useLocation<{ pathname: string }>();
+  const [state, setState] = useState<IFormState>({
     email: '',
     password: ''
-  })
-  const { isError } = useSelector((state:any)=>state.auth);
-  
+  });
+  const { isError } = useSelector((state)=>state.auth);
 
-  const onChange = event => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -28,7 +32,7 @@ const Login = () => {
     });
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: MouseEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(requestLogin({state}));
   }
@@ -36,7 +40,7 @@ const Login = () => {
   if (localStorage.getItem('accessToken')) {
       return (
         <Redirect
-          to={ history?.location?.state?.from || '/' }
+          to={ location?.state?.from || '/' }
         />
     );
   }

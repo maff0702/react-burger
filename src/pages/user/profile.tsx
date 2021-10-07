@@ -1,5 +1,6 @@
+import { FC } from 'react';
 import { Switch, Route, NavLink, useHistory, useLocation } from 'react-router-dom';
-import { useDispatch } from 'react-redux';
+import { useDispatch } from '../../hooks/hooks';
 
 import styles from './profile.module.css';
 import './styles.css';
@@ -7,12 +8,13 @@ import ProfileSettings from './profile-settings';
 import Orders from '../profile-orders/profile-orders'
 import Order from '../order-page/order';
 import { ProtectedRoute } from '../../components/protected-route/protected-route';
+import { TLocationHook } from '../../types/types';
 
 import { requestLogout } from '../../store/authSlice';
 
-const Profile = () => {
+const Profile: FC = () => {
   const dispatch = useDispatch();
-  const location: any = useLocation();
+  const location = useLocation<{ background: TLocationHook }>();
   const history = useHistory();
 
   const background = history.action === 'PUSH' && location.state && location.state.background;

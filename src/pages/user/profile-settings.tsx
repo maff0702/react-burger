@@ -1,5 +1,5 @@
-import { useState, useEffect } from 'react';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, useEffect, FC, ChangeEvent, SyntheticEvent } from 'react';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './profile.module.css';
@@ -7,10 +7,16 @@ import './styles.css';
 
 import { requestUpdateUser } from '../../store/authSlice';
 
-const ProfileSettings = () => {
+interface IFormState {
+  name: string;
+  email: string;
+  password: string;
+}
+
+const ProfileSettings: FC = () => {
   const dispatch = useDispatch();
-  const { isAuth, user } = useSelector((state:any) => state.auth);
-  const [state, setState] = useState({
+  const { isAuth, user } = useSelector((state: any) => state.auth);
+  const [state, setState] = useState<IFormState>({
     name: '',
     email: '',
     password: ''
@@ -26,7 +32,7 @@ const ProfileSettings = () => {
   }
   },[user]);
 
-  const onChange = event => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>) => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -35,12 +41,12 @@ const ProfileSettings = () => {
       [name]: value
     });
   }
-  const onSubmit = (e) => {
+  const onSubmit = (e: SyntheticEvent): void => {
     e.preventDefault();
     dispatch(requestUpdateUser({state}))
   };
 
-  const handleClickCancel = (e) => {
+  const handleClickCancel = (e: SyntheticEvent): void => {
     e.preventDefault();
     setState({
       ...state,

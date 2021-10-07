@@ -1,5 +1,6 @@
 import { useDispatch, useSelector } from '../../hooks/hooks';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
+import { History, Location } from 'history';
 import { useEffect } from 'react';
 
 import styles from './app.module.css';
@@ -17,6 +18,7 @@ import IngredientDetails from '../ingredient-details/ingredient-details';
 import Order from '../../pages/order-page/order';
 import OrderModal from '../order-modal/order-modal';
 import NotFound from '../../pages/not-found/not-fount';
+import { TLocationHook } from '../../types/types';
 
 import { requestCheckAuth } from '../../store/authSlice'
 import { requestIngredients, closeModalIngredientDetails } from '../../store/ingredientsSlice';
@@ -24,8 +26,8 @@ import { orderModalClose } from '../../store/wsOrdersSlice';
 
 function App() { 
   const dispatch = useDispatch();
-  const location: any = useLocation();
-  const history = useHistory();
+  const location = useLocation<{ background: TLocationHook }>();
+  const history: History = useHistory();
 
   const { isModalIngredientDetails } = useSelector((state) => state.ingredients);
   const { isModalOrder, orderModalTitle } = useSelector((state) => state.wsOrders);

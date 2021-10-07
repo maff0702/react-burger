@@ -1,11 +1,14 @@
+import { FC } from 'react';
 import styles from './ingredient.module.css';
-import { useSelector } from 'react-redux';
+import { useSelector } from '../../hooks/hooks';
 import { useParams } from 'react-router-dom';
 
-const Ingredient = () => {
-  const { id }: any = useParams();
-  const {dataIngredients} = useSelector((state: any) => state.ingredients);
-  const info = dataIngredients.filter((el)=>el._id === id)[0];
+import { TIngredient } from '../../types/ingredient';
+
+const Ingredient: FC = () => {
+  const { id } = useParams<{id: string}>();
+  const {dataIngredients} = useSelector((state) => state.ingredients);
+  const info: TIngredient = dataIngredients.filter((el: TIngredient)=>el._id === id)[0];
 
   return(
     <>

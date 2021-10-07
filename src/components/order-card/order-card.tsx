@@ -1,5 +1,5 @@
 import React, { FC } from 'react';
-import { useSelector, useDispatch } from 'react-redux';
+import { useSelector, useDispatch } from '../../hooks/hooks';
 import { Link, useHistory } from 'react-router-dom';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
@@ -11,20 +11,21 @@ import OrderStatus from '../../utils/order-status';
 import { orderModalOpen } from '../../store/wsOrdersSlice';
 
 import { IOrderCard } from '../../types/order';
+import { TIngredient } from '../../types/ingredient';
 
 interface IOrderCardProps {
   readonly order: IOrderCard;
   status?: boolean;
 }
 
-const OrderCard: FC<IOrderCardProps> = ({ order, status }:IOrderCardProps) => {
+const OrderCard: FC<IOrderCardProps> = ({ order, status }) => {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = history.location;
-  const { dataIngredients } = useSelector((state :any) => state.ingredients);
-  const ingredients = SelectIngredients(order, dataIngredients);
-  const path = history.location.pathname;
-  const handleClick = () =>{
+  const { dataIngredients } = useSelector((state) => state.ingredients);
+  const ingredients: TIngredient[] = SelectIngredients(order, dataIngredients);
+  const path: string = history.location.pathname;
+  const handleClick = (): void => {
     dispatch(orderModalOpen(order.number));
   }
 
@@ -50,10 +51,10 @@ const OrderCard: FC<IOrderCardProps> = ({ order, status }:IOrderCardProps) => {
       { status && OrderStatus(order.status) }
       <div className={styles.card__info}>
         <div className={styles.card__image}>
-          {ingredients.length < 7 && ingredients.map((item, i) => (
+          {ingredients.length < 7 && ingredients.map((item: TIngredient, i: number) => (
             <span key={i} style={{zIndex:49-i}}><img src={item.image} alt={item.name} /></span>
           ))}
-          {ingredients.length > 6 && ingredients.map((item, i) => {
+          {ingredients.length > 6 && ingredients.map((item: TIngredient, i: number) => {
             if(i < 5) return <span key={i} style={{zIndex:49-i}}><img src={item.image} alt={item.name} /></span>
             if(i === 6) return <span key={i} ><p className="text text_type_digits-default">+{order.ingredients.length-5}</p></span>
             return null;

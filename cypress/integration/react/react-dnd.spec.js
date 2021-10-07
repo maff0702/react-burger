@@ -5,7 +5,14 @@ describe('Dragtest', () => {
     cy.visit('http://localhost:3000');
   });
 
-  it("should dragndrop ingredients to constructor", () => {
+  // it("load ingredients from api", () => {
+  //   cy.get('[class*=constructor_constructor__ingredients]').as('dropContainer');
+  //   cy.get('[class*=ingredient_cart__ingredient]').as('cards');
+  // });
+
+
+  it("should dragndrop ingredients to constructor", () => {  
+    cy.wait(5000);
     cy.get('[class*=constructor_constructor__ingredients]').as('dropContainer');
     cy.get('[class*=ingredient_cart__ingredient]').as('cards');
 
@@ -29,7 +36,5 @@ describe('Dragtest', () => {
     cy.get("@cards")
       .contains("Соус с шипами Антарианского плоскоходца")
       .drag("@dropContainer");
-
   });
-
 });

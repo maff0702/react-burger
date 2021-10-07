@@ -1,6 +1,6 @@
-import { useState } from 'react';
-import { Link, useHistory, Redirect } from 'react-router-dom';
-import { useDispatch, useSelector } from 'react-redux';
+import { useState, FC, ChangeEvent, MouseEvent  } from 'react';
+import { Link, useLocation, Redirect } from 'react-router-dom';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { PasswordInput, Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './auth.module.css';
@@ -8,17 +8,23 @@ import './styles.css';
 
 import { requestRegister } from '../../store/authSlice';
 
-const Register = () => {
+interface IFormState {
+  name: string;
+  email: string;
+  password: string;
+}
+
+const Register: FC = () => {
   const dispatch = useDispatch();
-  const history:any = useHistory();
-  const [state, setState] = useState({
+  const location = useLocation<{ from: {pathname?: string} }>();
+  const [state, setState] = useState<IFormState>({
     name: '',
     email: '',
     password: ''
-  }) 
-  const { isError } = useSelector((state:any)=>state.auth);
+  });
+  const { isError } = useSelector((state)=>state.auth);
 
-  const onChange = event => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -27,14 +33,14 @@ const Register = () => {
       [name]: value
     });
   }
-  const onSubmit = (e) => {
+  const onSubmit = (e: MouseEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(requestRegister({state}))
   }
   if (localStorage.getItem('accessToken')) {
     return (
       <Redirect
-        to={ history?.location?.state?.from || '/' }
+        to={ location?.state?.from?.pathname || '/' }
       />
     );
   }

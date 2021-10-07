@@ -1,4 +1,4 @@
-import { useDispatch, useSelector } from 'react-redux';
+import { useDispatch, useSelector } from '../../hooks/hooks';
 import { useHistory } from 'react-router-dom';
 import { useEffect } from 'react';
 import { CurrencyIcon } from '@ya.praktikum/react-developer-burger-ui-components';
@@ -10,27 +10,30 @@ import SelectIngredients from '../../utils/select-ingredients';
 import OrderPrice from '../../utils/order-price';
 import OrderStatus from '../../utils/order-status';
 
+import { TIngredient } from '../../types/ingredient';
+import { IOrderCard } from '../../types/order';
+
 function Order() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { dataIngredients } = useSelector((state :any) => state.ingredients);
-  const { orders } = useSelector((state :any) => state.wsOrders);
-  const url = history.location.pathname.split('/').slice(1)[0];
+  const { dataIngredients } = useSelector((state) => state.ingredients);
+  const { orders } = useSelector((state) => state.wsOrders);
+  const url: string = history.location.pathname.split('/').slice(1)[0];
   let queryRequest = ''
   url === 'feed'
-  ? queryRequest = '/all'
-  : queryRequest = `?token=${localStorage.getItem('accessToken')}`;
+    ? queryRequest = '/all'
+    : queryRequest = `?token=${localStorage.getItem('accessToken')}`;
   
   useEffect(() => {
     dispatch(requestOrders(queryRequest));
   }, [dispatch, queryRequest]);
 
   const id = history.location.pathname.split('/').pop();
-  const order = orders.filter(el => el._id === id)[0];
-  const ingredientsAll = order ? SelectIngredients(order, dataIngredients) : null;
-  const ingredientsList = {};
+  const order: IOrderCard | undefined = orders?.filter(el => el._id === id)[0];
+  const ingredientsAll: TIngredient[] = order ? SelectIngredients(order, dataIngredients) : null;
+  const ingredientsList: object = {};
   
-  const ingredients = ingredientsAll && ingredientsAll.filter((item, index) => {
+  const ingredients: TIngredient[] = ingredientsAll && ingredientsAll.filter((item: TIngredient, index: number) => {
     if (ingredientsAll.indexOf(item) === index) {
       ingredientsList[item._id] = 1;
       return item;
@@ -47,7 +50,7 @@ function Order() {
         <div className="text text_type_main-default mt-3">{OrderStatus(order.status)}</div>
         <p className="text text_type_main-medium mt-15">Состав:</p>
         <div className={styles.ingredients__container}>
-          { ingredients.map(el => (
+          { ingredients.map((el: TIngredient) => (
             <div key={el._id} className={styles.ingredient__info}>
               <span className={styles.ingredient__image}><img src={el.image} alt={el.name} /></span>
               <p className={"text text_type_main-default "+styles.ingredient__title}>{el.name}</p>

@@ -1,6 +1,7 @@
 import { useRef, FC} from 'react';
 import { useDispatch } from 'react-redux';
 import { useDrag, useDrop } from 'react-dnd';
+import { XYCoord } from 'dnd-core'
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { ingredientCurrentDecrement } from '../../store/ingredientsSlice';
@@ -21,18 +22,19 @@ type TIngredientProps = {
 const IngedientElement: FC<TIngredientProps> = ({data, index}: TIngredientProps) => {
   const dispatch = useDispatch();
   const id = data._id;
-  const ref = useRef(null) as any;
+  const ref = useRef<HTMLDivElement>(null);
 
   const [, drop] = useDrop({
     accept: 'ingredientItem',
     hover: (item: DragItem, monitor) => {
+      if (!ref.current) return;
       const dragIndex = item.index;
       const hoverIndex = index;
       if (dragIndex === hoverIndex) {return}
       const hoverBoundingRect = ref.current?.getBoundingClientRect();
-      const hoverMiddleY =(hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
+      const hoverMiddleY = (hoverBoundingRect.bottom - hoverBoundingRect.top) / 2
       const clientOffset = monitor.getClientOffset();
-      const hoverClientY = (clientOffset as any).y - hoverBoundingRect.top;
+      const hoverClientY = (clientOffset as XYCoord).y - hoverBoundingRect.top;
       if (dragIndex < hoverIndex && hoverClientY < hoverMiddleY) {return}
       if (dragIndex > hoverIndex && hoverClientY > hoverMiddleY) {return}
       dispatch(moveIngredientConstructor({dragIndex,hoverIndex}));
@@ -49,7 +51,7 @@ const IngedientElement: FC<TIngredientProps> = ({data, index}: TIngredientProps)
     })
   })
 
-  const opacity = isDragging ? 0 : 1;
+  const opacity: number = isDragging ? 0 : 1;
   drag(drop(ref))
 
   return (
@@ -62,7 +64,7 @@ const IngedientElement: FC<TIngredientProps> = ({data, index}: TIngredientProps)
         handleClose={()=>{
           dispatch(deleteElementConstructor({index, id}));
           dispatch(ingredientCurrentDecrement({id}));
-          }}
+        }}
       />
     </span>
   )

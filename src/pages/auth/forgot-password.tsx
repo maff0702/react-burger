@@ -1,6 +1,7 @@
-import { useState } from 'react';
+import { useState, ChangeEvent, MouseEvent, FC } from 'react';
 import { Link, Redirect, useHistory } from 'react-router-dom';
-import { useSelector, useDispatch } from 'react-redux';
+import { History } from 'history';
+import { useSelector, useDispatch } from '../../hooks/hooks';
 import { Input, Button } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './auth.module.css';
@@ -8,15 +9,19 @@ import './styles.css';
 
 import { requestForgotPassword } from '../../store/authSlice'
 
-const ForgotPassword = () => {
+interface IFormState {
+  email: string;
+}
+
+const ForgotPassword: FC = () => {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const [state, setState] = useState({
+  const history: History = useHistory();
+  const [state, setState] = useState<IFormState>({
     email: '',
   })
-  const { isError, forgotStatus } = useSelector((state:any)=>state.auth);
+  const { isError, forgotStatus } = useSelector((state)=>state.auth);
 
-  const onChange = event => {
+  const onChange = (event: ChangeEvent<HTMLInputElement>): void => {
     const target = event.target;
     const value = target.value;
     const name = target.name;
@@ -26,7 +31,7 @@ const ForgotPassword = () => {
     });
   }
 
-  const onSubmit = (e) => {
+  const onSubmit = (e: MouseEvent<HTMLFormElement>): void => {
     e.preventDefault();
     dispatch(requestForgotPassword(state))
   }

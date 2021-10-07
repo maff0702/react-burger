@@ -1,3 +1,4 @@
+import { FC } from "react";
 import { useDrag } from "react-dnd";
 import { useDispatch } from "../../hooks/hooks";
 import { Link, useLocation } from 'react-router-dom';
@@ -5,16 +6,20 @@ import { CurrencyIcon, Counter } from '@ya.praktikum/react-developer-burger-ui-c
 
 import { openModalIngredientDetails } from '../../store/ingredientsSlice';
 import styles from './burger-ingredient.module.css';
-import ingredientsPropType from '../../types/types'
+import { TIngredient } from "../../types/ingredient";
 
-const IngredientCard = ({ingredient}) => {
+interface IIngredientProps {
+  ingredient: TIngredient
+}
+
+const IngredientCard: FC<IIngredientProps> = ({ingredient}) => {
   const location = useLocation();
   const dispatch = useDispatch();
   const [, dragRef] = useDrag({
     type: "ingredient",
     item: ingredient
-});
-  const clickIngredient = () =>{
+  });
+  const clickIngredient = (): void =>{
     dispatch(openModalIngredientDetails({ingredient}));
   }
   return(
@@ -27,7 +32,8 @@ const IngredientCard = ({ingredient}) => {
         to={{
           pathname: `/ingredients/${ingredient._id}`,
           state: { background: location }
-      }}>
+        }}
+      >
       <span className={styles.icon__counter}>{ ingredient.__v !== 0 && <Counter count={ingredient.__v} size="small" />}</span>
       <img className="mr-4 ml-4" src={ingredient.image} alt={ingredient.name} />
       <p className="mt-1 text text_type_digits-default">{ingredient.price} <CurrencyIcon type="primary" /></p>
@@ -36,9 +42,5 @@ const IngredientCard = ({ingredient}) => {
     </div>
   )
 }
-
-IngredientCard.propTypes = {
-  ingredient: ingredientsPropType.isRequired,
-};
 
 export default IngredientCard;
