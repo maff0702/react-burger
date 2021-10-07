@@ -26,7 +26,7 @@ const OrderCard: FC<IOrderCardProps> = ({ order, status }) => {
   const ingredients: TIngredient[] = SelectIngredients(order, dataIngredients);
   const path: string = history.location.pathname;
   const handleClick = (): void => {
-    dispatch(orderModalOpen(order.number));
+    dispatch(orderModalOpen(order.number.toString()));
   }
 
   return (

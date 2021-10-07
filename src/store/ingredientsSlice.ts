@@ -5,7 +5,7 @@ import { TIngredient } from "../types/ingredient";
 export const requestIngredients = createAsyncThunk(
   'ingredients/requestIngredients',
   async () => {
-    const response = await axiosAPI.getIngredients();  
+    const response = await axiosAPI.getIngredients();
     return response.data;
   }
 )
@@ -28,18 +28,18 @@ const ingredientsSlice = createSlice({
   name: 'ingredients',
   initialState,
   reducers: {
-    ingredientCurrentIncrement: (state, action) => {
+    ingredientCurrentIncrement: (state, action: PayloadAction<{item: TIngredient}>) => {
       if(action.payload.item.type === 'bun') state.dataIngredients = state.dataIngredients.map((obj) => obj.type === 'bun' ? {...obj, __v: 0} : obj );
       state.dataIngredients = state.dataIngredients.map((obj) => obj._id === action.payload.item._id ? {...obj, __v: obj.__v + 1} : obj );
       state.dataIngredients = state.dataIngredients.map((obj) => (obj.type === 'bun' && obj._id === action.payload.item._id) ? {...obj, __v: 2} : obj);
     },
-    ingredientCurrentDecrement: (state, action: PayloadAction<any>) => {
+    ingredientCurrentDecrement: (state, action: PayloadAction<{id: string}>) => {
       state.dataIngredients = state.dataIngredients.map((obj)=> obj._id === action.payload.id ? {...obj, __v: obj.__v - 1} : obj );
     },
     deletedAllCurrentIngredient: (state) => {
       state.dataIngredients = state.dataIngredients.map((obj)=> ({...obj, __v: 0}) );
     },
-    openModalIngredientDetails: (state, action) => {
+    openModalIngredientDetails: (state, action: PayloadAction<{ingredient: TIngredient}>) => {
       state.currentIngredient = action.payload.ingredient;
       state.isModalIngredientDetails = true;
     },
@@ -50,7 +50,7 @@ const ingredientsSlice = createSlice({
   },
   extraReducers: {
     [requestIngredients.pending.toString()]: (state) => { state.isLoading = true},
-    [requestIngredients.fulfilled.toString()]: (state, action) => {
+    [requestIngredients.fulfilled.toString()]: (state, action:PayloadAction<{data:TIngredient[]}>) => {
       state.dataIngredients = action.payload.data;
       state.isLoading = false;
     },

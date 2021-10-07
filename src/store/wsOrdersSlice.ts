@@ -1,10 +1,11 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import axiosAPI from "../services/main-service";
 import { IOrderCard } from "../types/order";
+import { IGetMessage } from "../types/store/ws-orders-types";
 
 export const requestOrders = createAsyncThunk(
     'wsOrders/requestOrders',
-    async (query :any) => {
+    async (query :string) => {
       const response = await axiosAPI.getOrders(query);
       return response.data;
     }
@@ -41,7 +42,7 @@ const wsOrders = createSlice({
   name: 'wsOrders',
   initialState,
   reducers: {
-    wsConnectionStart: (state, action) => {
+    wsConnectionStart: (state, action: PayloadAction<string>) => {
       state.url = action.payload;
       state.isLoading = true;
     },
@@ -49,11 +50,14 @@ const wsOrders = createSlice({
       state.isConnected = true;
       state.isError = false;
     },
-    wsGetMessage: (state, action) => {
-      state.orders = action.payload?.orders;
-      state.total = action.payload?.total;
-      state.totalToday = action.payload?.totalToday;
-      state.message = action.payload?.message;
+    wsGetMessage: (state, action: PayloadAction<IGetMessage>) => {
+      if(action.payload.success) {
+        state.orders = action.payload.orders;
+        state.total = action.payload.total;
+        state.totalToday = action.payload.totalToday;
+      } else {
+        state.message = action.payload?.message;
+      }
       state.isLoading = false;
     },
     wsConnectionClosed: (state) => {
@@ -62,14 +66,14 @@ const wsOrders = createSlice({
       state.totalToday = null;
       state.isConnected = false;
     },
-    wsConnectionClosedStatus: (state, action) => {
+    wsConnectionClosedStatus: (state, action: PayloadAction<number>) => {
       state.statusCode = action.payload;
     },
     wsConnectionError: (state) => {
       state.isError = true;
       state.isLoading = false;
     },
-    orderModalOpen: (state, action) => {
+    orderModalOpen: (state, action: PayloadAction<string>) => {
       state.isModalOrder = true;
       state.orderModalTitle = action.payload;
     },
@@ -80,13 +84,13 @@ const wsOrders = createSlice({
   },
   extraReducers: {
     [requestOrders.pending.toString()]: (state) => { state.isLoading = true},
-    [requestOrders.fulfilled.toString()]: (state, action) => {
+    [requestOrders.fulfilled.toString()]: (state, action: PayloadAction<{orders:IOrderCard[]}>) => {
       state.orders = action.payload.orders;
       state.isLoading = false;
     },
     [requestOrders.rejected.toString()]: (state) => {
       state.isError = true;
-      state.isLoading = false
+      state.isLoading = false;
     },
   }
 })

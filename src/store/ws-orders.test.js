@@ -53,12 +53,11 @@ test('WS success connected', () => {
 })
 
 test('WS get message', () => {
-  expect(reducer(state, wsGetMessage({orders, total: 1, totalToday: 1, message: 'message'}))).toEqual({
+  expect(reducer(state, wsGetMessage({orders, total: 1, totalToday: 1, success: true}))).toEqual({
     ...state,
     orders: orders,
     total: 1,
     totalToday: 1,
-    message: 'message',
     isLoading: false,
   })
 })

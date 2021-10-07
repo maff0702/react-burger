@@ -1,5 +1,7 @@
-const OrderPrice = (ingredients) => {
-  const price = ingredients.reduce((sum, cur) => {
+import { TIngredient } from "../types/ingredient";
+
+const OrderPrice = (ingredients: TIngredient[]) => {
+  const price = ingredients.reduce((sum: number, cur: TIngredient) => {
     return sum + cur.price;
   }, 0);
 

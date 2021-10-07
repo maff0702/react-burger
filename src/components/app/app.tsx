@@ -1,6 +1,6 @@
 import { useDispatch, useSelector } from '../../hooks/hooks';
 import { Switch, Route, useLocation, useHistory } from 'react-router-dom';
-import { History, Location } from 'history';
+import { History } from 'history';
 import { useEffect } from 'react';
 
 import styles from './app.module.css';

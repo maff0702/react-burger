@@ -12,3 +12,8 @@ export type TAllState = TOrdersState
   | TConstructorState;
 
 export type TLocationHook = { pathname?: string } & Location;
+
+export type TUserInfo = {
+  name: string;
+  email: string;
+};

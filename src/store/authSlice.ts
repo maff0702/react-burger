@@ -1,16 +1,23 @@
-import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
+import { createSlice, createAsyncThunk, PayloadAction } from "@reduxjs/toolkit";
 import AuthService from "../services/auth-service";
+import { TUserInfo } from "../types/types";
+import {
+  IRegisterUser,
+  ILoginUser,
+  IUpdateUser,
+  ICheckUser
+} from '../types/services/auth-types';
 
 export const requestRegister = createAsyncThunk(
   'auth/register',
-  async (formData :any) => {
+  async (formData:{state: TUserInfo &{password: string}}) => {
     const response = await AuthService.register(formData.state);
     return response.data;
   }
 )
 export const requestLogin = createAsyncThunk(
   'auth/login',
-  async (formData :any) => {
+  async (formData:{state: {email:string; password: string}}) => {
     const response = await AuthService.login(formData.state);
     return response.data;
   }
@@ -31,21 +38,21 @@ export const requestCheckAuth = createAsyncThunk(
 )
 export const requestUpdateUser = createAsyncThunk(
   'auth/updateUser',
-  async (formData :any) => {
+  async (formData:{state: TUserInfo}) => {
     const response = await AuthService.updateUser(formData.state);
     return response.data;
   }
 )
 export const requestForgotPassword = createAsyncThunk(
   'auth/forgotPassword',
-  async ({email} :any) => {
+  async ({email}:{email: string}) => {
     const response = await AuthService.forgotPassword(email);
     return response.data;
   }
 )
 export const requestResetPassword = createAsyncThunk(
   'auth/resetPassword',
-  async (formData :any) => {
+  async (formData:{token: string; password: string}) => {
     const response = await AuthService.resetPassword(formData);
     return response.data;
   }
@@ -78,7 +85,7 @@ const authSlice = createSlice({
   initialState,
   reducers: {},
   extraReducers: {
-    [requestRegister.fulfilled.toString()]: (state, action) => {
+    [requestRegister.fulfilled.toString()]: (state, action:PayloadAction<IRegisterUser>) => {
       state.user = action.payload.user;
       state.isAuth = true;
       state.isError = false;
@@ -87,7 +94,7 @@ const authSlice = createSlice({
     },
     [requestRegister.rejected.toString()]: (state) => {state.isError = true},
 
-    [requestLogin.fulfilled.toString()]: (state, action) => { 
+    [requestLogin.fulfilled.toString()]: (state, action:PayloadAction<ILoginUser>) => { 
       state.user = action.payload.user;
       state.isAuth = true;
       state.isError = false;
@@ -106,7 +113,7 @@ const authSlice = createSlice({
     [requestCheckAuth.pending.toString()]: (state) => {
       state.isLoading = true;
     },
-    [requestCheckAuth.fulfilled.toString()]: (state, action) => {
+    [requestCheckAuth.fulfilled.toString()]: (state, action:PayloadAction<ICheckUser>) => {
       state.user = action.payload.user;
       state.isAuth = true;
       state.isLoading = false;
@@ -116,7 +123,7 @@ const authSlice = createSlice({
       state.isLoading = false;
     },
 
-    [requestUpdateUser.fulfilled.toString()]: (state, action) => {
+    [requestUpdateUser.fulfilled.toString()]: (state, action:PayloadAction<IUpdateUser>) => {
       state.user = action.payload.user;
     },
     [requestUpdateUser.rejected.toString()]: (state) => {state.isError = true},

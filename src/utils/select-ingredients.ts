@@ -1,5 +1,8 @@
-const SelectIngredients = (order, dataIngredients) => {
-	const ingredients = [] as any;
+import { TIngredient } from "../types/ingredient";
+import { IOrderCard } from "../types/order";
+
+const SelectIngredients = (order: IOrderCard, dataIngredients: TIngredient[]) => {
+	const ingredients: any = [];
   order.ingredients.forEach((el) => {
     dataIngredients.forEach((element) => {
       if (el === element._id) ingredients.push(element);
