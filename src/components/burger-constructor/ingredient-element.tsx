@@ -1,12 +1,14 @@
 import { useRef, FC} from 'react';
 import { useDispatch } from 'react-redux';
-import { useDrag, useDrop } from 'react-dnd';
+import { useDrag, useDrop, DragSourceMonitor } from 'react-dnd';
 import { XYCoord } from 'dnd-core'
 import { ConstructorElement, DragIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import { ingredientCurrentDecrement } from '../../store/ingredientsSlice';
 import { deleteElementConstructor, moveIngredientConstructor } from '../../store/constructorSlice';
-import { TIngredientItem } from './ingredients';
+import { TIngredient } from '../../types/ingredient';
+
+type TIngredientItem = TIngredient & {newId: number};
 
 interface DragItem {
   index: number
@@ -46,7 +48,10 @@ const IngedientElement: FC<TIngredientProps> = ({data, index}: TIngredientProps)
     item: () => {
       return {id, index}
     },
-    collect: (monitor: any) => ({
+    collect: (monitor: DragSourceMonitor<{
+      id: string;
+      index: number;
+  }, unknown>) => ({
       isDragging: monitor.isDragging()
     })
   })

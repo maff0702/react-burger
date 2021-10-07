@@ -4,16 +4,9 @@ import { Tab } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './burger-ingredient.module.css';
 import Ingredients from './ingredients';
-import { TIngredient } from "../../types/ingredient";
-
-interface IRequestIngredients {
-  dataIngredients: TIngredient[];
-  isLoading: boolean;
-  isError: boolean;
-}
 
 const BurgerIngredients: FC = () => {
-  const {isError, isLoading, dataIngredients}: IRequestIngredients = useSelector((state) => state.ingredients);
+  const {isError, isLoading, dataIngredients} = useSelector((state) => state.ingredients);
   const [current, setCurrent] = useState('one');
   const ingredientsSection = useRef<HTMLDivElement>(null);
   const bunRef = useRef<HTMLSpanElement>(null);

@@ -9,7 +9,7 @@ import { IOrderCard } from '../../types/order';
 
 function Feed() {
   const dispatch = useDispatch();
-  const orders: IOrderCard[] | null = useSelector((state) => state.wsOrders.orders);
+  const orders = useSelector((state) => state.wsOrders.orders);
   const { total, totalToday, isLoading } = useSelector((state) => state.wsOrders);
 
   useEffect(()=> {

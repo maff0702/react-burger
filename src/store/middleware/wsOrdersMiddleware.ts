@@ -1,5 +1,5 @@
 import { Dispatch, Action } from 'redux';
-// import { RootState } from '../index';
+
 import {
   wsConnectionStart,
   wsConnectionClosed,
@@ -11,7 +11,7 @@ import {
 
 export const socketMiddleware = () => {
   return (store: {dispatch: Dispatch}) => {
-    let socket: any = null;
+    let socket: WebSocket;
 
     return (next: Dispatch) => (action: Action & {payload: string}) => {
       const { dispatch } = store;
@@ -26,7 +26,7 @@ export const socketMiddleware = () => {
           dispatch(wsConnectionSuccess());
         };
 
-        socket.onmessage = (event:{data:string; message: string}) => {
+        socket.onmessage = (event: MessageEvent<string>) => {
           const message = event.data;
           const data = JSON.parse(message);
           dispatch(wsGetMessage(data));
@@ -42,7 +42,7 @@ export const socketMiddleware = () => {
       }
       
       if (type === wsConnectionClosed.toString()) {
-        socket.close("1000");
+        socket.close(1000);
       }
 
       next(action);

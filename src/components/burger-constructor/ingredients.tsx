@@ -3,15 +3,12 @@ import { useSelector } from '../../hooks/hooks';
 
 import styles from './burger-constructor.module.css';
 import IngedientElement from './ingredient-element';
-import { TIngredient } from '../../types/ingredient';
-
-export type TIngredientItem = TIngredient & {newId: number};
 
 const Ingredients: FC = () => {
-  const listIngredients:TIngredientItem[] = useSelector((state) => state.constructors.ingredients);
+  const listIngredients = useSelector((state) => state.constructors.ingredients);
   return(  
     <div className={styles.wrapper__ingrediends}>
-      {listIngredients.map((item: TIngredientItem, index: number) => (
+      {listIngredients.map((item, index) => (
         <IngedientElement key={item.newId} index={index} data={item} />
       ))}
     </div>

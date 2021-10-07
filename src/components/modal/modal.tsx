@@ -3,6 +3,7 @@ import { useHistory, useLocation } from 'react-router-dom';
 import { History } from 'history';
 import ReactDOM from 'react-dom';
 import { useDispatch, useSelector } from '../../hooks/hooks';
+import { ActionCreatorWithoutPayload } from '@reduxjs/toolkit';
 import { CloseIcon } from '@ya.praktikum/react-developer-burger-ui-components';
 
 import styles from './modal.module.css';
@@ -12,7 +13,7 @@ const modalRoot = document.getElementById("modals");
 
 interface IModalProps {
   readonly active: boolean;
-  setActive?: any;
+  readonly setActive: ActionCreatorWithoutPayload<string> | null;
   title?: string;
   readonly children: ReactNode;
 }

@@ -24,7 +24,7 @@ const BurgerConstructor: FC = () => {
   const dispatch = useDispatch();
   const history: History = useHistory();
   const { ingredients, isModalOrderDetails} = useSelector((state) => state.constructors);
-  const bun: any = useSelector((state) => state.constructors.bun);
+  const bun = useSelector((state) => state.constructors.bun);
 
   const [, dropTarget] = useDrop({
     accept: "ingredient",
@@ -48,7 +48,7 @@ const BurgerConstructor: FC = () => {
       dispatch(openModalOrderDetails());
       const idIngredients: string[] = [];
       ingredients.forEach((element: TIngredient) => idIngredients.push(element._id));
-      dispatch(sendOrder([bun._id, ...idIngredients, bun._id]));
+      if(bun) dispatch(sendOrder([bun._id, ...idIngredients, bun._id]));
       dispatch(deletedAllCurrentIngredient());
     } else {   
       history.replace({pathname: '/login'})

@@ -15,7 +15,7 @@ interface IFormState {
 
 const ProfileSettings: FC = () => {
   const dispatch = useDispatch();
-  const { isAuth, user } = useSelector((state: any) => state.auth);
+  const { isAuth, user } = useSelector((state) => state.auth);
   const [state, setState] = useState<IFormState>({
     name: '',
     email: '',
@@ -23,13 +23,13 @@ const ProfileSettings: FC = () => {
   });
 
   useEffect(()=>{
-    if(isAuth){
+    if(isAuth && user){
       setState({
         ...state,
         name: user.name,
         email: user.email
       })
-  }
+    }
   },[user]);
 
   const onChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -48,11 +48,13 @@ const ProfileSettings: FC = () => {
 
   const handleClickCancel = (e: SyntheticEvent): void => {
     e.preventDefault();
-    setState({
-      ...state,
-      name: user.name,
-      email: user.email
-    })
+    if(user){
+      setState({
+        ...state,
+        name: user.name,
+        email: user.email
+      })
+    }
   };
 
   return (

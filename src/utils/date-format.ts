@@ -1,7 +1,7 @@
-import moment from 'moment';
+import moment, { Moment } from 'moment';
 import 'moment/locale/ru'
 
-const dateFormat = (date: any ) => {
+const dateFormat = (date: Moment | string | undefined ) => {
   moment.locale('ru');
   date = moment(date);
 

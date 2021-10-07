@@ -15,7 +15,7 @@ interface IFormState {
 
 const Login: FC = () => {
   const dispatch = useDispatch();
-  const location: any = useLocation<{ pathname: string }>();
+  const location = useLocation<{ from: {pathname?: string} }>();
   const [state, setState] = useState<IFormState>({
     email: '',
     password: ''
