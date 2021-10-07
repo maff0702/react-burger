@@ -8,7 +8,7 @@ import { TIngredient } from '../../types/ingredient';
 const Ingredient: FC = () => {
   const { id } = useParams<{id: string}>();
   const {dataIngredients} = useSelector((state) => state.ingredients);
-  const info: TIngredient = dataIngredients.filter((el: TIngredient)=>el._id === id)[0];
+  const info: TIngredient = dataIngredients.filter((el)=>el._id === id)[0];
 
   return(
     <>

@@ -50,7 +50,7 @@ function Order() {
         <div className="text text_type_main-default mt-3">{OrderStatus(order.status)}</div>
         <p className="text text_type_main-medium mt-15">Состав:</p>
         <div className={styles.ingredients__container}>
-          { ingredients?.map((el: TIngredient) => (
+          { ingredients?.map((el) => (
             <div key={el._id} className={styles.ingredient__info}>
               <span className={styles.ingredient__image}><img src={el.image} alt={el.name} /></span>
               <p className={"text text_type_main-default "+styles.ingredient__title}>{el.name}</p>

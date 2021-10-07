@@ -51,10 +51,10 @@ const OrderCard: FC<IOrderCardProps> = ({ order, status }) => {
       { status && OrderStatus(order.status) }
       <div className={styles.card__info}>
         <div className={styles.card__image}>
-          {ingredients.length < 7 && ingredients.map((item: TIngredient, i: number) => (
+          {ingredients.length < 7 && ingredients.map((item, i) => (
             <span key={i} style={{zIndex:49-i}}><img src={item.image} alt={item.name} /></span>
           ))}
-          {ingredients.length > 6 && ingredients.map((item: TIngredient, i: number) => {
+          {ingredients.length > 6 && ingredients.map((item, i) => {
             if(i < 5) return <span key={i} style={{zIndex:49-i}}><img src={item.image} alt={item.name} /></span>
             if(i === 6) return <span key={i} ><p className="text text_type_digits-default">+{order.ingredients.length-5}</p></span>
             return null;
