@@ -1,3 +1,8 @@
+name project: cosmo-burger-constructor
+react, redux-toolkit, react-router, axios, web-socketm react-dnd
+test: cypress, jest
+project ready to production
+
 # Getting Started with Create React App
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
